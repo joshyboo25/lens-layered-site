@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lens & Layered Designs</title>
+
+  <!-- Link to CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <!-- Link to JS -->
+  <script defer src="assets/js/effects.js"></script>
+</head>
+<body>
+  <header>
+    <h1>lens & Layered Designs</h1>
+    <nav>
+      <ul>
+        <li><a href="about.html">About</a></li> <!-- ✅ Updated link -->
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+		<li><a href="privacy.html">Privacy</a></li> <!-- 🔐 New link -->
+		<li><a href="shop.html">shop</a></li> <!-- 🔐 New link -->
+      </ul>
+    </nav>
+  </header>
+
+  <section id="hero">
+    <h2>Snapping Moments. Layering Meaning</h2>
+    <p>Visuals with soul — curated, captured, and created for you.</p>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery">
+    <h2 style="text-align:center;">Gallery</h2>
+    <div class="gallery-grid" id="gallery-grid">
+      <!-- Images injected by JS -->
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Lens & Layered Designs</p>
+    <p>Follow us on <a href="https://instagram.com/lenslayeredDesigns" target="_blank">Instagram</a></p>
+  </footer>
+  
+ <!-- Lightbox HTML -->
+<div id="lightbox" class="lightbox" style="display: none;">
+  <span class="lightbox-close">&times;</span>
+  <span class="lightbox-prev">&#10094;</span>
+  <img class="lightbox-img" src="" alt="Full View" />
+  <div class="lightbox-caption"></div>
+  <span class="lightbox-next">&#10095;</span>
+</div>
+
+
+
+
+</body>
+</html>
+
+
