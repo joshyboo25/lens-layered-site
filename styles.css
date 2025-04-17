@@ -389,3 +389,41 @@ footer a {
   background-color: #FF7F50;
 }
 
+..site-header {
+  background-color: #000;
+  color: white;
+  padding: 1rem;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.site-logo {
+  height: 40px;
+}
+
+.site-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.login-btn {
+  background-color: #ff5733;
+  color: white;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #e64a28;
+}
