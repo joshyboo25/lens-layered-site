@@ -108,23 +108,28 @@
 </head>
 <body>
 
-<div class="logo-overlay">
-  <img src="logo/lenslogo.png" alt="Lens&Layered Logo" />
-</div>
+<header class="site-header">
+  <div class="header-top">
+    <div class="left-side">
+      <img src="logo/lenslogo.png" alt="Lens&Layered Logo" class="site-logo" />
+    </div>
+    <h1 class="site-title">Lens & Layered Designs</h1>
+    <div class="right-side">
+      <a href="login.html" class="login-btn">Login / Sign Up</a>
+    </div>
+  </div>
 
-  <!-- Header -->
-  <header class="contact-header">
-    <h1>Contact Lens & Layered Designs</h1>
-    <nav>
-      <ul>
-        <li><a href="home.html">home</a></li>
-		<li><a href="about.html">About</a></li>
-        <li><a href="contact.html" class="active">Contact</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-		<li><a href="shop.html">Shop</a></li>
-      </ul>
-    </nav>
-  </header>
+  <nav>
+    <ul>
+      <li><a href="about.html">About</a></li>
+      <li><a href="index.html#gallery">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="shop.html">Shop</a></li>
+    </ul>
+  </nav>
+</header>
+
 
   <!-- Hero Section -->
   <section class="contact-hero">
@@ -133,15 +138,15 @@
   </section>
 
   <!-- Contact Form Section -->
-  <section class="contact-container">
-    <h2>Send Us a Message</h2>
-    <form>
-      <input type="text" placeholder="Your Name" required />
-      <input type="email" placeholder="Your Email" required />
-      <textarea rows="6" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-  </section>
+  <form action="https://formspree.io/f/mjkyqvly" method="POST">
+  <input type="text" name="name" placeholder="Your Name" required />
+  <input type="email" name="_replyto" placeholder="Your Email" required />
+  <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+  <button type="submit">Send Message</button><input type="hidden" name="_next" value="https://yourdomain.com/thankyou.html">
+
+  
+</form>
+
 
   <!-- Footer -->
   <footer>
