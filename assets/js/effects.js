@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const imageFolder = 'images/gallery/';
+  const imageFolder = 'gallery/';
   const imageList = [
     { file: 'test1.JPG', title: 'Urban Shadows' },
     { file: 'test2.JPG', title: 'Golden Hour Glow' },

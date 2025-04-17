@@ -242,11 +242,11 @@ footer a {
 }
 
 @keyframes slideShow {
-  0%, 20%   { background-image: url("images/slides/test1.jpg"); }
-  25%, 40%  { background-image: url("images/slides/test2.jpg"); }
-  45%, 60%  { background-image: url("images/slides/test3.jpg"); }
-  65%, 80%  { background-image: url("images/slides/test4.jpg"); }
-  85%, 100% { background-image: url("images/slides/test5.jpg"); }
+  0%, 20%   { background-image: url("slides/test1.jpg"); }
+  25%, 40%  { background-image: url("slides/test2.jpg"); }
+  45%, 60%  { background-image: url("slides/test3.jpg"); }
+  65%, 80%  { background-image: url("slides/test4.jpg"); }
+  85%, 100% { background-image: url("slides/test5.jpg"); }
 }
 
 .privacy-page {
@@ -389,3 +389,75 @@ footer a {
   background-color: #FF7F50;
 }
 
+.site-header {
+  background-color: #000;
+  color: #fff;
+  padding: 1rem;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.left-side,
+.right-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.right-side {
+  justify-content: flex-end;
+}
+
+.site-title {
+  flex: 2;
+  text-align: center;
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.site-logo {
+  height: 40px;
+  width: auto;
+}
+
+.login-btn {
+  background-color: #ff5733;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  white-space: nowrap;
+  transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #e64a28;
+}
+
+@media (max-width: 600px) {
+  .header-top {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .left-side,
+  .right-side {
+    justify-content: center;
+  }
+
+  .site-title {
+    font-size: 1.3rem;
+  }
+
+  .site-logo {
+    height: 30px;
+  }
+}
