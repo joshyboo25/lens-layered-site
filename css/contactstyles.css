@@ -1,0 +1,44 @@
+.slideshow-hero {
+  position: relative;
+  height: 60vh;
+  background-size: cover;
+  background-position: center;
+  animation: slideShow 25s infinite ease-in-out;
+}
+
+
+.hero-banner {
+  position: relative;
+  background-image: url (images\test1.JPG); /* Pick your favorite background */
+  background-size: cover;
+  background-position: center;
+  background-color: #808080;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.7));
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+  z-index: 2;
+  color: #F8F8FF;
+  text-align: center;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  line-height: 1.4;
+  background-color: #808080;
+  backdrop-filter: blur(5px);
+  border-radius: 12px;
+  padding: 2rem 1rem;
+  max-width: 90%;
+  margin: 0 auto;
+}
