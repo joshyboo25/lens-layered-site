@@ -8,7 +8,7 @@ At Lens & Layered Designs, we take the safety of our users and platform seriousl
 
 If you find any potential security issue, please notify us immediately via:
 
-- **Email:** support@lenslayereddesigns.com *(replace with actual)*
+- **Email:** lens.layereddesigns@gmail.com *(replace with actual)*
 - **Contact Page:** [lenslayereddesigns.com/contact.html](https://lenslayereddesigns.com/contact.html)
 - **Instagram DM:** [@lenslayeredDesigns](https://instagram.com/lenslayeredDesigns)
 
