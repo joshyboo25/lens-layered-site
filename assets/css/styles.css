@@ -242,11 +242,11 @@ footer a {
 }
 
 @keyframes slideShow {
-  0%, 20%   { background-image: url("images/test1.jpg"); }
-  25%, 40%  { background-image: url("images/test2.jpg"); }
-  45%, 60%  { background-image: url("images/test3.jpg"); }
-  65%, 80%  { background-image: url("images/test4.jpg"); }
-  85%, 100% { background-image: url("images/test5.jpg"); }
+  0%, 20%   { background-image: url("images/slides/test1.jpg"); }
+  25%, 40%  { background-image: url("images/slides/test2.jpg"); }
+  45%, 60%  { background-image: url("images/slides/test3.jpg"); }
+  65%, 80%  { background-image: url("images/slides/test4.jpg"); }
+  85%, 100% { background-image: url("images/slides/test5.jpg"); }
 }
 
 .privacy-page {
@@ -348,3 +348,44 @@ footer a {
 .lightbox-close:hover {
   color: #ff5733;
 }
+
+.logo-overlay {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.5); /* Optional dark backdrop */
+  padding: 0.4rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.logo-overlay img {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
+}
+
+.auth-button {
+  position: fixed;
+  top: 40px;
+  right: 20px;
+  z-index: 9999;
+  background-color: #ff5733;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.auth-button a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.95rem;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+.auth-button:hover {
+  background-color: #FF7F50;
+}
+

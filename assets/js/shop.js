@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const shopGrid = document.getElementById('shop-grid');
 
   const products = [
-    { image: 'images/test20.JPG', name: 'basic grinder e.g. 2G', price: '$5' },
-    { image: 'images/test23.JPG', name: 'dual color bong', price: '$20' },
-    { image: 'images/tes12.JPG', name: 'dual color bong and grinder', price: '$35' },
-    { image: 'images/test17.JPG', name: 'basic bong "enlarged" 5G', price: '$10' },
-    { image: 'images/test21.JPG', name: 'multi color grinder', price: '$5' },
+    { image: 'images/shop/test20.JPG', name: 'basic grinder e.g. 2G', price: '$5' },
+    { image: 'images/shop/test23.JPG', name: 'dual color bong', price: '$20' },
+    { image: 'images/shop/tes12.JPG', name: 'dual color bong and grinder', price: '$35' },
+    { image: 'images/shop/test17.JPG', name: 'basic bong "enlarged" 5G', price: '$10' },
+    { image: 'images/shop/test21.JPG', name: 'multi color grinder', price: '$5' },
     // Add more product entries as needed
   ];
 
