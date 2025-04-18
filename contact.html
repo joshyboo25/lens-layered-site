@@ -31,7 +31,7 @@
     }
 
     .contact-container {
-      background-color: #fff;
+      background-color: #FF7F50;
       max-width: 600px;
       margin: 3rem auto;
       padding: 2rem;
@@ -125,8 +125,6 @@
       <li><a href="home.html#gallery">Gallery</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li><a href="privacy.html">Privacy</a></li>
-      <li><a href="shop.html">Shop</a></li>
-
     </ul>
   </nav>
 </header>
@@ -138,15 +136,20 @@
     <p>Got questions, collab ideas, or looking to book a shoot? We’re here for it. Fill out the form and we’ll get back to you soon.</p>
   </section>
 
-  <!-- Contact Form Section -->
-  <form action="https://formspree.io/f/mjkyqvly" method="POST">
-  <input type="text" name="name" placeholder="Your Name" required />
-  <input type="email" name="_replyto" placeholder="Your Email" required />
-  <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
-  <button type="submit">Send Message</button><input type="hidden" name="_next" value="https://yourdomain.com/thankyou.html">
+ <!-- Contact Form Section -->
+<section class="contact-container">
+  <h2>Get In Touch</h2>
+  <div id="form-message" style="text-align: center; margin-bottom: 1rem; color: green;"></div>
+  <form action="https://formspree.io/f/mjkyqvly" method="POST" class="styled-form">
+    <input type="text" name="name" placeholder="Your Name" required />
+    <input type="email" name="_replyto" placeholder="Your Email" required />
+    <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+    <input type="hidden" name="_next" value="https://lenslayereddesigns.netlify.app/thankyou.html">
+    <button type="submit">Send Message</button>
+  </form>
+</section>
 
-  
-</form>
+
 
 
   <!-- Footer -->
