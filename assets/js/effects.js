@@ -1,29 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
   const imageFolder = 'gallery/';
-const imageList = [
-  'test1.JPG', 'test2.JPG', 'test3.JPG', 'test4.JPG', 'test5.JPG',
-  'test6.JPG', 'test7.JPG', 'test8.JPG', 'test9.JPG', 'test10.JPG',
-  'test11.JPG', 'test12.JPG', 'test13.JPG', 'test14.JPG', 'test15.JPG',
-  'test16.JPG', 'test17.JPG', 'test18.JPG', 'test19.JPG', 'test20.JPG',
-  'test21.JPG', 'test22.JPG', 'test23.JPG', 'test24.JPG', 'test25.JPG',
-  'test26.JPG'
-];
-
+  const imageList = [
+    'test1.JPG', 'test2.JPG', 'test3.JPG', 'test4.JPG', 'test5.JPG',
+    'test6.JPG', 'test7.JPG', 'test8.JPG', 'test9.JPG', 'test10.JPG',
+    'test11.JPG', 'tes12.JPG', 'test13.JPG', 'test14.JPG', 'test15.JPG',
+    'test16.JPG', 'test17.JPG', 'test18.JPG', 'test19.JPG', 'test20.JPG',
+    'test21.JPG', 'test22.JPG', 'test23.JPG', 'test24.JPG', 'test25.JPG',
+    'test26.JPG'
+  ];
 
   const galleryGrid = document.getElementById('gallery-grid');
 
-  imageList.forEach((item, index) => {
+  imageList.forEach((filename) => {
     const wrapper = document.createElement('div');
     wrapper.className = 'gallery-item-wrapper';
 
     const img = document.createElement('img');
-    img.src = `${imageFolder}${item.file}`;
-    img.alt = item.title;
+    img.src = `${imageFolder}${filename}`;
+    img.alt = filename;
     img.className = 'gallery-item';
 
     const caption = document.createElement('div');
     caption.className = 'gallery-caption';
-    caption.textContent = item.title;
+    caption.textContent = filename.replace(/\.[^/.]+$/, '').replace(/_/g, ' '); // simple caption
 
     img.onerror = () => {
       console.error('Image failed to load:', img.src);
@@ -112,6 +111,7 @@ const imageList = [
     }
   });
 });
+
 
 
 

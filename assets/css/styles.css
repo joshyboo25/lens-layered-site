@@ -389,9 +389,9 @@ footer a {
   background-color: #FF7F50;
 }
 
-.site-header {
+..site-header {
   background-color: #000;
-  color: #fff;
+  color: white;
   padding: 1rem;
 }
 
@@ -399,42 +399,28 @@ footer a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.left-side,
-.right-side {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.right-side {
-  justify-content: flex-end;
-}
-
-.site-title {
-  flex: 2;
-  text-align: center;
-  font-size: 1.8rem;
-  margin: 0;
+  position: relative;
 }
 
 .site-logo {
   height: 40px;
-  width: auto;
+}
+
+.site-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 1.75rem;
 }
 
 .login-btn {
   background-color: #ff5733;
   color: white;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
   text-decoration: none;
+  border-radius: 4px;
   font-weight: bold;
-  white-space: nowrap;
   transition: background 0.3s ease;
 }
 
@@ -442,22 +428,22 @@ footer a {
   background-color: #e64a28;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .header-top {
     flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .left-side,
-  .right-side {
-    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 0;
   }
 
   .site-title {
-    font-size: 1.3rem;
+    position: static;
+    transform: none;
+    text-align: center;
+    font-size: 1.5rem;
   }
 
-  .site-logo {
-    height: 30px;
+  .login-btn {
+    margin-top: 0.5rem;
   }
 }
