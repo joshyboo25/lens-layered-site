@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout – Lens & Layered Designs</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    .checkout-container {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .checkout-container h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .checkout-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .checkout-total {
+      text-align: right;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 1.5rem;
+    }
+
+    .place-order-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background-color: #ff5733;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      margin-top: 2rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .place-order-btn:hover {
+      background-color: #e64a28;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Lens & Layered Designs</h1>
+    <nav>
+      <ul>
+        <li><a href="shop.html">← Back to Shop</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="checkout-container">
+    <h2>Order Summary</h2>
+    <div id="checkout-list"></div>
+    <p class="checkout-total" id="checkout-total"></p>
+    <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+  </section>
+
+  <script>
+    const checkoutList = document.getElementById('checkout-list');
+    const checkoutTotal = document.getElementById('checkout-total');
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let total = 0;
+
+    if (cart.length === 0) {
+      checkoutList.innerHTML = "<p>Your cart is empty.</p>";
+      checkoutTotal.style.display = 'none';
+      document.querySelector('.place-order-btn').style.display = 'none';
+    } else {
+      cart.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'checkout-item';
+        div.innerHTML = `<span>${item.name}</span><span>${item.price}</span>`;
+        checkoutList.appendChild(div);
+
+        total += parseFloat(item.price.replace('$', ''));
+      });
+
+      checkoutTotal.textContent = `Total: $${total.toFixed(2)}`;
+    }
+
+    function placeOrder() {
+      alert("Thank you! Your order has been placed.");
+      localStorage.removeItem('cart');
+      window.location.href = 'shop.html';
+    }
+  </script>
+</body>
+</html>

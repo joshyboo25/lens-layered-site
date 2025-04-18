@@ -1,0 +1,148 @@
+<!-- signup.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up – Lens&LayeredDesigns</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    .slideshow-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .slideshow-bg img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      animation: fade 50s infinite;
+    }
+
+    .slideshow-bg img:nth-child(1) { animation-delay: 0s; }
+    .slideshow-bg img:nth-child(2) { animation-delay: 10s; }
+    .slideshow-bg img:nth-child(3) { animation-delay: 20s; }
+    .slideshow-bg img:nth-child(4) { animation-delay: 30s; }
+    .slideshow-bg img:nth-child(5) { animation-delay: 40s; }
+
+    @keyframes fade {
+      0%   { opacity: 0; }
+      10%  { opacity: 1; }
+      20%  { opacity: 1; }
+      30%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    .auth-container {
+      max-width: 400px;
+      margin: 10vh auto;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      color: #fff;
+      position: relative;
+      z-index: 2;
+    }
+
+    .auth-container h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-container input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .auth-container button {
+      width: 100%;
+      padding: 0.75rem;
+      background: #ff5733;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .auth-container button:hover {
+      background: #e04a2c;
+    }
+
+    .auth-container a {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: #a0d8ff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="logo-overlay">
+  <img src="logo/lenslogo.png" alt="Lens&LayeredDesigns Logo" />
+</div>
+
+  <div class="slideshow-bg">
+    <img src="slides/test1.jpg" alt="slide1">
+    <img src="slides/test2.jpg" alt="slide2">
+    <img src="slides/test4.jpg" alt="slide3">
+    <img src="slides/test3.jpg" alt="slide4">
+    <img src="slides/test5.jpg" alt="slide5">
+  </div>
+
+  <div class="auth-container">
+    <h2>Create Account</h2>
+    <input type="text" id="signup-name" placeholder="Your Name" required />
+    <input type="email" id="signup-email" placeholder="Email" required />
+    <input type="password" id="signup-password" placeholder="Password" required />
+    <button onclick="signup()">Sign Up</button>
+    <a href="login.html">Already have an account? Log in</a>
+  </div>
+  <script>
+    function signup() {
+      const name = document.getElementById('signup-name').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+
+      if (!name || !email || !password) {
+        alert('Please fill out all fields.');
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const exists = users.find(user => user.email === email);
+
+      if (exists) {
+        alert('Account already exists with that email.');
+        return;
+      }
+
+      users.push({ name, email, password });
+      localStorage.setItem('users', JSON.stringify(users));
+      alert('Signup successful!');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>
