@@ -12,8 +12,8 @@ If you believe you've discovered a security vulnerability or exploit, we ask tha
 
 Contact us through one of the following channels:
 
-- **Email:** support@lenslayereddesigns.com *(replace with actual)*
-- **Contact Form:** [lenslayereddesigns.com/contact.html](https://lenslayereddesigns.com/contact.html)
+- **Email:** lens.layereddesigns@gmail.com
+- **Contact Form:** [lenslayereddesigns.com/contact.html](https://lenslayereddesigns.netlify.app/contact)
 - **Instagram DM:** [@lenslayeredDesigns](https://instagram.com/lenslayeredDesigns)
 
 We appreciate all responsible disclosures and will respond quickly to assess and mitigate any risks.
