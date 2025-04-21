@@ -1,51 +1,83 @@
-## 📸 Lens & Layered Designs Security Policy
+# ✨ Lens & Layered Designs – Frontend
 
-At Lens & Layered Designs, we take the safety of our users and platform seriously. This document outlines our current approach to security and what to do if you discover a vulnerability.
+Welcome to the official frontend of **Lens & Layered Designs** – a visual project that blends automotive culture, street photography, and curated design into a unique user experience.
 
----
-
-## 🔐 Reporting a Vulnerability
-
-If you find any potential security issue, please notify us immediately via:
-
-- **Email:** lens.layereddesigns@gmail.com *(replace with actual)*
-- **Contact Page:** [lenslayereddesigns.com/contact.html](https://lenslayereddesigns.netlify.app/contact)
-- **Instagram DM:** [@lenslayeredDesigns](https://instagram.com/lenslayeredDesigns)
-
-We appreciate responsible disclosure and will work swiftly to investigate and resolve the issue.
+This frontend is built with HTML, CSS, and JavaScript, with features designed for interactivity, visual appeal, and secure user experiences.
 
 ---
 
-## 🛡️ Current Security Measures
+## 🖥️ Live Preview
 
-We are actively working on implementing user account functionality, and while this is in development, here’s how we currently protect your data:
-
-- **Encrypted Communications:** HTTPS is enforced across all live environments.
-- **Data Minimization:** We only collect essential personal information (e.g., name, email) through our contact form.
-- **No Data Selling:** We will never sell or share your personal data. Period.
-- **Secure Hosting:** Website is hosted on GitHub Pages and/or secured local server with controlled access.
-- **Third-Party Tools:** Any integrations (e.g., Instagram embeds, form tools) are vetted and limited to trusted providers.
+🌐 [https://lenslayereddesigns.netlify.app](https://lenslayereddesigns.netlify.app)
 
 ---
 
-## 🧱 In Development
+## ⚙️ Tech Stack
+
+- **HTML5 / CSS3 / JavaScript**
+- **Netlify** (for deployment)
+- **Custom Vanilla JS** logic (no frameworks)
+- **Mobile-first responsive design**
+- **Secure backend integration via REST API**
+
+---
+
+## 🔐 Security Policy
+
+At **Lens & Layered Designs**, we take platform and user security seriously. This frontend is constantly evolving alongside our backend infrastructure.
+
+### 🧩 Current Measures
+
+- **HTTPS everywhere** – All live environments enforce secure connections.
+- **Minimal data collection** – We only ask for what's necessary via forms (e.g., name, email).
+- **No data selling, ever** – Privacy is not a product.
+- **Trusted third-party tools** – Any embeds, forms, or integrations are vetted and controlled.
+- **API requests secured** – Token-based authentication with backend routes.
+
+---
+
+### 🔒 Reporting Vulnerabilities
+
+If you discover a bug or vulnerability, report it directly:
+
+- 📧 **Email:** lens.layereddesigns@gmail.com
+- 📬 **Contact Page:** [lenslayereddesigns.netlify.app/contact](https://lenslayereddesigns.netlify.app/contact)
+- 📸 **Instagram DM:** [@lenslayeredDesigns](https://instagram.com/lenslayeredDesigns)
+
+We encourage responsible disclosure and respond ASAP to protect our users.
+
+---
+
+## 🧪 Features in Progress
 
 We're actively working on:
-- Secure login/signup systems
-- Role-based user permissions for gallery submissions or private content
-- `.htpasswd` or OAuth-based password protection (in testing)
+
+- 🔐 Secure login & signup system
+- 🧑‍🎨 User dashboards & upload permissions
+- 🖼️ Private galleries + role-based access
+- ⚙️ Light admin CMS features for custom content
+- 🛒 Shopping cart and checkout system
 
 ---
 
-## 🧑‍💻 Best Practices for Contributors
+## 🧑‍💻 Contributing
 
-If you're contributing to our codebase:
-- Avoid committing sensitive API keys or credentials
-- Use strong passwords and 2FA for developer accounts
-- Follow principle of least privilege when deploying
+This is a closed project for now — contributions are limited to approved collaborators. If you're working on this codebase:
+
+- Don’t commit API keys, tokens, or secrets
+- Keep image file sizes optimized
+- Use descriptive commit messages and branches for features
+- Avoid pushing to `main` without testing
+
+---
+
+## 🛑 Usage Restrictions
+
+This project is the exclusive property of **Lens & Layered Designs**.  
+Unauthorized reproduction, cloning, reuse of layout/designs, or hosting under a different name is strictly prohibited and may result in legal action.
 
 ---
 
 ## 🗓️ Last Updated
 
-April 17, 2025
+April 20, 2025
