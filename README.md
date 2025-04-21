@@ -9,7 +9,7 @@ At Lens & Layered Designs, we take the safety of our users and platform seriousl
 If you find any potential security issue, please notify us immediately via:
 
 - **Email:** lens.layereddesigns@gmail.com *(replace with actual)*
-- **Contact Page:** [lenslayereddesigns.com/contact.html](https://lenslayereddesigns.com/contact.html)
+- **Contact Page:** [lenslayereddesigns.com/contact.html]([https://lenslayereddesigns.com/contact.html](https://lenslayereddesigns.netlify.app/contact))
 - **Instagram DM:** [@lenslayeredDesigns](https://instagram.com/lenslayeredDesigns)
 
 We appreciate responsible disclosure and will work swiftly to investigate and resolve the issue.
