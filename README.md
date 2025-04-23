@@ -74,7 +74,7 @@ This is a closed project for now — contributions are limited to approved colla
 ## 🛑 Usage Restrictions
 
 This project is the exclusive property of **Lens & Layered Designs**.  
-Unauthorized reproduction, cloning, reuse of layout/designs, or hosting under a different name is strictly prohibited and may result in legal action.
+Unauthorized reproduction, cloning, reuse of layout/designs, or hosting under a different name is strictly prohibited and will result in legal action.
 
 ---
 
