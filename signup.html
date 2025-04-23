@@ -193,18 +193,27 @@
           body: JSON.stringify({ username, email, password }),
         });
 
+        const contentType = response.headers.get('content-type') || "";
+
+        if (!contentType.includes("application/json")) {
+          const raw = await response.text();
+          console.error("⚠️ Server returned non-JSON:", raw.slice(0, 200));
+          throw new Error("Server error: non-JSON response.");
+        }
+
         const data = await response.json();
 
-        if (response.ok) {
-          alert("Signup successful!");
+        if (response.ok && data.token) {
           localStorage.setItem("authToken", data.token);
+          alert("Signup successful!");
           window.location.href = "dashboard.html";
         } else {
           throw new Error(data.message || "Signup failed.");
         }
+
       } catch (err) {
-        console.error("Signup error:", err);
-        alert("Error: " + err.message);
+        console.error("❌ Signup error:", err);
+        alert("Signup error: " + err.message);
       } finally {
         signupBtn.disabled = false;
         signupBtn.textContent = "Sign Up";
@@ -212,6 +221,7 @@
     });
   });
 </script>
+
 
 </body>
 </html>
