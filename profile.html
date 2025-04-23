@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile – Lens & Layered Designs</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #f5f5f5;
+    }
+
+    .profile-container {
+      max-width: 600px;
+      margin: 5vh auto;
+      padding: 2rem;
+      background-color: #1e1e1e;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    .profile-container h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      color: #ff5733;
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .profile-info label {
+      font-weight: 600;
+    }
+
+    .profile-info input {
+      padding: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      background: #2e2e2e;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .profile-info input:disabled {
+      color: #aaa;
+    }
+
+    .btns {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+
+    .btns button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .btn-edit {
+      background: #ffbe76;
+      color: #000;
+    }
+
+    .btn-edit:hover {
+      background: #ffc98d;
+    }
+
+    .btn-save {
+      background: #00b894;
+      color: #fff;
+    }
+
+    .btn-save:hover {
+      background: #00cfa8;
+    }
+
+    footer {
+      margin-top: 4rem;
+      text-align: center;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <h2>Your Profile</h2>
+    <form class="profile-info">
+      <label for="username">Username</label>
+      <input type="text" id="username" value="lens&layeredDesigns" disabled />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" value="lens.layererdDesigns@gmail.com" disabled />
+
+      <div class="btns">
+        <button type="button" class="btn-edit" onclick="enableEdit()">Edit</button>
+        <button type="submit" class="btn-save" style="display:none">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <footer>
+    &copy; 2025 Lens & Layered Designs
+  </footer>
+
+  <script>
+    function enableEdit() {
+      document.getElementById('username').disabled = false;
+      document.getElementById('email').disabled = false;
+      document.querySelector('.btn-save').style.display = 'inline-block';
+    }
+
+    document.querySelector('.profile-info').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const token = localStorage.getItem('authToken');
+
+      const res = await fetch('https://lens-backend-73wi.onrender.com/api/user/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ username, email })
+      });
+
+      if (res.ok) {
+        alert('Profile updated successfully!');
+        document.getElementById('username').disabled = true;
+        document.getElementById('email').disabled = true;
+        document.querySelector('.btn-save').style.display = 'none';
+      } else {
+        alert('Failed to update profile.');
+      }
+    });
+  </script>
+</body>
+</html>

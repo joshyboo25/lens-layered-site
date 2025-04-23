@@ -1,22 +1,31 @@
-<!-- signup.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign Up – Lens&LayeredDesigns</title>
-  <link rel="stylesheet" href="assets/css/styles.css" />
+  <title>Sign Up – Lens & Layered Designs</title>
+  <link rel="icon" href="logo/lenslogo.png" />
+
   <style>
+    /* Reset + Centering */
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #000;
       overflow: hidden;
+      position: relative;
+      color: #fff;
     }
 
+    /* Background slideshow */
     .slideshow-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
+      position: absolute;
+      top: 0; left: 0;
       width: 100%;
       height: 100%;
       z-index: -1;
@@ -24,125 +33,193 @@
     }
 
     .slideshow-bg img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      animation: fade 50s infinite;
-    }
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: fadeCycle 50s infinite;
+}
 
-    .slideshow-bg img:nth-child(1) { animation-delay: 0s; }
-    .slideshow-bg img:nth-child(2) { animation-delay: 10s; }
-    .slideshow-bg img:nth-child(3) { animation-delay: 20s; }
-    .slideshow-bg img:nth-child(4) { animation-delay: 30s; }
-    .slideshow-bg img:nth-child(5) { animation-delay: 40s; }
+.slideshow-bg img:nth-child(1) { animation-delay: 0s; }
+.slideshow-bg img:nth-child(2) { animation-delay: 10s; }
+.slideshow-bg img:nth-child(3) { animation-delay: 20s; }
+.slideshow-bg img:nth-child(4) { animation-delay: 30s; }
+.slideshow-bg img:nth-child(5) { animation-delay: 40s; }
 
-    @keyframes fade {
-      0%   { opacity: 0; }
-      10%  { opacity: 1; }
-      20%  { opacity: 1; }
-      30%  { opacity: 0; }
-      100% { opacity: 0; }
-    }
+@keyframes fadeCycle {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  20% { opacity: 1; }
+  25% { opacity: 0; }
+  100% { opacity: 0; }
+}
 
+
+    /* Form container */
     .auth-container {
-      max-width: 400px;
-      margin: 10vh auto;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      color: #fff;
-      position: relative;
-      z-index: 2;
-    }
-
-    .auth-container h2 {
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 400px;
       text-align: center;
+    }
+
+    .auth-logo img {
+      max-width: 80px;
+      display: block;
+      margin: 0 auto 1rem;
+    }
+
+    h2 {
       margin-bottom: 1.5rem;
+      font-size: 1.75rem;
     }
 
-    .auth-container input {
+    input {
       width: 100%;
       padding: 0.75rem;
-      margin-bottom: 1rem;
-      border: none;
-      border-radius: 5px;
+      margin: 0.75rem 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .auth-container button {
+    input:focus {
+      outline: none;
+      border-color: #ff5733;
+      box-shadow: 0 0 5px rgba(255, 87, 51, 0.5);
+    }
+
+    button {
       width: 100%;
       padding: 0.75rem;
-      background: #ff5733;
-      border: none;
+      margin-top: 1rem;
+      background-color: #ff5733;
       color: white;
       font-size: 1rem;
-      border-radius: 5px;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
-    .auth-container button:hover {
-      background: #e04a2c;
+    button:hover {
+      background-color: #e64a28;
     }
 
-    .auth-container a {
-      display: block;
-      text-align: center;
-      margin-top: 1rem;
-      color: #a0d8ff;
+    a {
+      color: #ff5733;
       text-decoration: none;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 480px) {
+      .auth-container {
+        padding: 1.5rem 1rem;
+        margin: 2rem 1rem;
+      }
+
+      input,
+      button {
+        font-size: 0.95rem;
+        padding: 0.6rem;
+      }
     }
   </style>
 </head>
 <body>
 
-<div class="logo-overlay">
-  <img src="logo/lenslogo.png" alt="Lens&LayeredDesigns Logo" />
-</div>
-
+  <!-- Background Slideshow -->
   <div class="slideshow-bg">
     <img src="slides/test1.jpg" alt="slide1">
     <img src="slides/test2.jpg" alt="slide2">
-    <img src="slides/test4.jpg" alt="slide3">
-    <img src="slides/test3.jpg" alt="slide4">
+    <img src="slides/test3.jpg" alt="slide3">
+    <img src="slides/test4.jpg" alt="slide4">
     <img src="slides/test5.jpg" alt="slide5">
   </div>
 
+  <!-- Auth Form -->
   <div class="auth-container">
+    <div class="auth-logo">
+      <img src="logo/lenslogo.png" alt="Lens & Layered Logo" />
+    </div>
     <h2>Create Account</h2>
-    <input type="text" id="signup-name" placeholder="Your Name" required />
-    <input type="email" id="signup-email" placeholder="Email" required />
-    <input type="password" id="signup-password" placeholder="Password" required />
-    <button onclick="signup()">Sign Up</button>
-    <a href="login.html">Already have an account? Log in</a>
+
+    <form id="signup-form">
+      <input type="text" id="signup-username" placeholder="Name" required />
+      <input type="email" id="signup-email" placeholder="Email" required />
+      <input type="password" id="signup-password" placeholder="Password" required />
+      <button id="signup-btn" type="submit">Sign Up</button>
+    </form>
+
+    <p style="margin-top: 1rem;">
+      <a href="login.html">Already have an account? Log in</a>
+    </p>
   </div>
-  <script>
-    function signup() {
-      const name = document.getElementById('signup-name').value;
-      const email = document.getElementById('signup-email').value;
+
+  <!-- Signup JS -->
+ <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('signup-form');
+    const signupBtn = document.getElementById('signup-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('signup-username').value.trim();
+      const email = document.getElementById('signup-email').value.trim().toLowerCase();
       const password = document.getElementById('signup-password').value;
 
-      if (!name || !email || !password) {
-        alert('Please fill out all fields.');
+      if (!username || !email || !password) {
+        alert("All fields are required.");
         return;
       }
 
-      const users = JSON.parse(localStorage.getItem('users')) || [];
-      const exists = users.find(user => user.email === email);
+      signupBtn.disabled = true;
+      signupBtn.textContent = "Signing up...";
 
-      if (exists) {
-        alert('Account already exists with that email.');
-        return;
+      const backendURL = window.location.hostname.includes("localhost")
+        ? "http://localhost:10000"
+        : "https://lens-backend-73wi.onrender.com";
+
+      try {
+        const response = await fetch(`${backendURL}/api/auth/signup`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("Signup successful!");
+          localStorage.setItem("authToken", data.token);
+          window.location.href = "dashboard.html";
+        } else {
+          throw new Error(data.message || "Signup failed.");
+        }
+      } catch (err) {
+        console.error("Signup error:", err);
+        alert("Error: " + err.message);
+      } finally {
+        signupBtn.disabled = false;
+        signupBtn.textContent = "Sign Up";
       }
+    });
+  });
+</script>
 
-      users.push({ name, email, password });
-      localStorage.setItem('users', JSON.stringify(users));
-      alert('Signup successful!');
-      window.location.href = 'login.html';
-    }
-  </script>
+</body>
+</html>
+
+
+
+
+
+
 </body>
 </html>

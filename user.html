@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Public Profile – Lens & Layered Designs</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    body {
+      background-color: #121212;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+    }
+
+    .public-profile {
+      max-width: 900px;
+      margin: 5vh auto;
+      background: #1e1e1e;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    }
+
+    .header-section {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header-section img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ff5733;
+    }
+
+    .username {
+      font-size: 2rem;
+      margin-top: 1rem;
+    }
+
+    .upload-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .upload-grid img {
+      width: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="public-profile">
+    <div class="header-section">
+      <img id="public-pfp" src="logo/lenslogo.png" alt="Profile Photo">
+      <div class="username" id="public-username">@username</div>
+    </div>
+
+    <h3>📷 Uploads</h3>
+    <div class="upload-grid" id="public-upload-grid">
+      <!-- Dynamic uploads will render here -->
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Lens & Layered Designs
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const username = params.get('u');
+
+      if (!username) {
+        document.body.innerHTML = '<p style="text-align:center;margin-top:50px;">No user specified in URL.</p>';
+        return;
+      }
+
+      try {
+        const res = await fetch(`https://lens-backend-73wi.onrender.com/api/user/${username}`);
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error);
+
+        document.getElementById('public-username').textContent = `@${data.username}`;
+        if (data.profilePic) {
+          document.getElementById('public-pfp').src = data.profilePic;
+        }
+
+        const uploadGrid = document.getElementById('public-upload-grid');
+        data.uploads?.forEach(src => {
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = 'Upload';
+          uploadGrid.appendChild(img);
+        });
+      } catch (err) {
+        document.body.innerHTML = `<p style='text-align:center;margin-top:50px;color:red;'>${err.message}</p>`;
+      }
+    });
+  </script>
+</body>
+</html>

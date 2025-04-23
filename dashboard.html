@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>User Dashboard – Lens & Layered Designs</title>
+  <link rel="icon" href="logo/lenslogo.png" />
   <link rel="stylesheet" href="assets/css/styles.css" />
   <style>
     body {
@@ -154,6 +155,7 @@
     <img src="logo/lenslogo.png" alt="Lens&Layered Logo" class="site-logo" />
     <h1 class="site-title">User Dashboard</h1>
     <button class="logout-btn" onclick="logout()">Logout</button>
+    <button class="home-btn" onclick="home()">Home</button>
   </header>
 
   <main class="dashboard-container">
@@ -161,14 +163,19 @@
       <ul>
         <li><a href="#overview" class="active">📊 Overview</a></li>
         <li><a href="#uploads">📁 Uploads</a></li>
-        <li><a href="#profile">👤 Profile</a></li>
-        <li><a href="#settings">⚙️ Settings</a></li>
+        <li><a href="profile.html">👤 Profile</a></li>
+        <li><a href="about.html">⚙Contribute</a></li>
       </ul>
     </aside>
 
     <section class="dashboard-content">
       <h2>Welcome back, <span id="username">User</span> 👋</h2>
       <div class="dashboard-widgets">
+	  <div class="upload-form">
+  <h3>📤 Upload New Image</h3>
+  <input type="file" id="uploadInput" accept="image/*" />
+  <button class="logout-btn" onclick="uploadImage()">Upload</button>
+</div>
         <div class="widget">Total Uploads:<strong id="uploadCount">0</strong></div>
         <div class="widget">Followers:<strong id="followerCount">--</strong></div>
         <div class="widget">Last Login:<strong id="lastLogin">--</strong></div>
@@ -191,45 +198,116 @@
 
   <script>
     function logout() {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('user');
-      window.location.href = 'login.html';
-    }
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('user');
+  window.location.href = 'login.html';
+}
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const token = localStorage.getItem("authToken");
-      if (!token) {
-        alert("Please log in first.");
-        return (window.location.href = "login.html");
+function home() {
+  window.location.href = 'home.html';
+}
+
+function uploadImage() {
+  const token = localStorage.getItem("authToken");
+  const fileInput = document.getElementById("uploadInput");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Please select an image.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  fetch("https://lens-backend-73wi.onrender.com/api/user/upload", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        alert("Upload successful!");
+        location.reload(); // refresh dashboard to see new upload
+      } else {
+        throw new Error(data.error || "Upload failed.");
       }
-
-      fetch("https://lens-backend-73wi.onrender.com/api/user/dashboard", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return res.json();
-        })
-        .then((data) => {
-          document.getElementById("username").textContent = data.username || "User";
-          document.getElementById("uploadCount").textContent = data.uploads?.length || 0;
-          document.getElementById("lastLogin").textContent = new Date(data.lastLogin).toLocaleDateString();
-
-          const grid = document.getElementById("upload-grid");
-          if (Array.isArray(data.uploads)) {
-            data.uploads.forEach((src) => {
-              const img = document.createElement("img");
-              img.src = src;
-              img.alt = "User Upload";
-              grid.appendChild(img);
-            });
-          }
-        })
-        .catch((err) => {
-          console.error("Dashboard fetch failed:", err);
-          alert("Failed to load dashboard data.");
-        });
+    })
+    .catch((err) => {
+      console.error("❌ Upload error:", err);
+      alert("Upload failed: " + err.message);
     });
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("authToken");
+
+  if (!token) {
+    alert("Please log in first.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  console.log("🔐 Token being sent:", token);
+
+  fetch("https://lens-backend-73wi.onrender.com/api/user/dashboard", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then(async (res) => {
+  const contentType = res.headers.get("content-type") || "";
+
+  if (!res.ok) {
+    const errorText = contentType.includes("application/json")
+      ? await res.json()
+      : await res.text();
+    const errorMessage = contentType.includes("application/json")
+      ? errorText.error || `HTTP ${res.status}`
+      : `HTML response: ${res.status}`;
+    throw new Error(errorMessage);
+  }
+
+  if (!contentType.includes("application/json")) {
+    const htmlText = await res.text();
+    console.error("⚠️ Expected JSON but got HTML:", htmlText);
+    throw new Error("Server did not return JSON.");
+  }
+
+  return res.json();
+})
+
+    .then((data) => {
+      console.log("✅ DASHBOARD DATA:", data);
+
+      document.getElementById("username").textContent = data.username || "User";
+      document.getElementById("uploadCount").textContent = data.uploads?.length || 0;
+      document.getElementById("lastLogin").textContent = new Date(data.lastLogin).toLocaleDateString();
+
+      const grid = document.getElementById("upload-grid");
+      if (Array.isArray(data.uploads)) {
+        data.uploads.forEach((src) => {
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = "User Upload";
+          img.style.borderRadius = "10px";
+          img.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
+          img.style.width = "100%";
+          img.style.height = "auto";
+          grid.appendChild(img);
+        });
+      }
+    })
+    .catch((err) => {
+      console.error("❌ Dashboard fetch failed:", err);
+      alert("Failed to load dashboard data: " + err.message);
+    });
+});
+
   </script>
 </body>
 </html>

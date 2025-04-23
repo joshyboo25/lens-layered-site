@@ -1,4 +1,3 @@
-<!-- login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,26 +6,31 @@
   <title>Login – Lens&LayeredDesigns</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
   <style>
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+      background: #000;
+      color: #fff;
     }
 
     .slideshow-bg {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%;
       height: 100%;
       z-index: -1;
-      overflow: hidden;
     }
 
     .slideshow-bg img {
       position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -42,27 +46,27 @@
 
     @keyframes fade {
       0%   { opacity: 0; }
-      10%  { opacity: 1; }
+      5%   { opacity: 1; }
       20%  { opacity: 1; }
-      30%  { opacity: 0; }
+      25%  { opacity: 0; }
       100% { opacity: 0; }
     }
 
     .auth-container {
       max-width: 400px;
-      margin: 10vh auto;
-      background: rgba(0, 0, 0, 0.85);
+      width: 90%;
       padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      color: #fff;
-      position: relative;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(15px) saturate(160%);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      text-align: center;
       z-index: 2;
     }
 
     .auth-container h2 {
-      text-align: center;
       margin-bottom: 1.5rem;
+      font-size: 1.75rem;
     }
 
     .auth-container input {
@@ -70,7 +74,15 @@
       padding: 0.75rem;
       margin-bottom: 1rem;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .auth-container input:focus {
+      outline: none;
+      border: 1px solid #ff5733;
+      box-shadow: 0 0 5px rgba(255, 87, 51, 0.4);
     }
 
     .auth-container button {
@@ -80,8 +92,9 @@
       border: none;
       color: white;
       font-size: 1rem;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     .auth-container button:hover {
@@ -90,18 +103,46 @@
 
     .auth-container a {
       display: block;
-      text-align: center;
       margin-top: 1rem;
       color: #a0d8ff;
       text-decoration: none;
+    }
+
+    .logo-overlay {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+
+    .logo-overlay img {
+      width: 80px;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .auth-container {
+        padding: 1.5rem 1rem;
+      }
+
+      .auth-container input,
+      .auth-container button {
+        font-size: 0.95rem;
+        padding: 0.6rem;
+      }
+
+      .logo-overlay {
+        top: 15px;
+      }
     }
   </style>
 </head>
 <body>
 
-<div class="logo-overlay">
-  <img src="logo/lenslogo.png" alt="Lens&Layered Logo" />
-</div>
+  <div class="logo-overlay">
+    <img src="logo/lenslogo.png" alt="Lens&Layered Logo" />
+  </div>
 
   <div class="slideshow-bg">
     <img src="slides/test8.jpg" alt="slide1">
@@ -118,6 +159,7 @@
     <button onclick="login()">Log In</button>
     <a href="signup.html">Need an account? Sign up</a>
   </div>
+
   <script>
     function login() {
       const email = document.getElementById('login-email').value;
@@ -127,13 +169,16 @@
       const user = users.find(u => u.email === email && u.password === password);
 
       if (user) {
-        alert(`Welcome, ${user.name}!`);
+        alert(`Welcome, ${user.name || user.email}!`);
         localStorage.setItem('loggedInUser', JSON.stringify(user));
-        window.location.href = 'home.html';
+        window.location.href = 'dashboard.html';
       } else {
         alert('Invalid email or password.');
       }
     }
   </script>
+
 </body>
 </html>
+
+

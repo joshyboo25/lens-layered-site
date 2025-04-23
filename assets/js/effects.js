@@ -3,10 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const imageList = [
     'test1.JPG', 'test2.JPG', 'test3.JPG', 'test4.JPG', 'test5.JPG',
     'test6.JPG', 'test7.JPG', 'test8.JPG', 'test9.JPG', 'test10.JPG',
-    'test11.JPG', 'tes12.JPG', 'test13.JPG', 'test14.JPG', 'test15.JPG',
-    'test16.JPG', 'test17.JPG', 'test18.JPG', 'test19.JPG', 'test20.JPG',
-    'test21.JPG', 'test22.JPG', 'test23.JPG', 'test24.JPG', 'test25.JPG',
-    'test26.JPG'
+    'test27.jpg', 'test28.jpg', 'test29.jpg', 'test30.jpg', 'test31.jpg',
+    'test32.jpg', 'test33.jpg', 'test34.jpg', 'test35.jpg', 'test36.jpg',
+    'test36.jpg', 'test38.jpg', 'test39.jpg', 'test40.jpg', 'test41.jpg',
+    'test42.jpg', 'test43.jpg', 'test44.jpg', 'test45.jpg', 'test46.jpg',
+	'test47.jpg', 'test48.jpg', 'test49.jpg', 'test50.jpg', 'test51.jpg',
+	'test52.jpg', 'test53.jpg', 'test54.jpg', 'test55.jpg', 'test56.jpg',
+	'test57.jpg', 'test58.jpg'
   ];
 
   const galleryGrid = document.getElementById('gallery-grid');
@@ -18,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const img = document.createElement('img');
     img.src = `${imageFolder}${filename}`;
     img.alt = filename;
-    img.className = 'gallery-item';
+    img.className = 'gallery-item';  
 
     const caption = document.createElement('div');
     caption.className = 'gallery-caption';
