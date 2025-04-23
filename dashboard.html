@@ -197,20 +197,20 @@
   </footer>
 
   <script>
-    function logout() {
+   function logout() {
   localStorage.removeItem('authToken');
   localStorage.removeItem('user');
   window.location.href = 'login.html';
 }
 
 function home() {
-  window.location.href = 'home.html';
+  window.location.href = 'index.html'; // Use 'index.html' unless you have a real 'home.html'
 }
 
 function uploadImage() {
   const token = localStorage.getItem("authToken");
   const fileInput = document.getElementById("uploadInput");
-  const file = fileInput.files[0];
+  const file = fileInput?.files?.[0];
 
   if (!file) {
     alert("Please select an image.");
@@ -231,7 +231,7 @@ function uploadImage() {
     .then((data) => {
       if (data.success) {
         alert("Upload successful!");
-        location.reload(); // refresh dashboard to see new upload
+        location.reload(); // Refresh to show new upload
       } else {
         throw new Error(data.error || "Upload failed.");
       }
@@ -241,7 +241,6 @@ function uploadImage() {
       alert("Upload failed: " + err.message);
     });
 }
-
 
 document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("authToken");
@@ -260,33 +259,32 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   })
     .then(async (res) => {
-  const contentType = res.headers.get("content-type") || "";
+      const contentType = res.headers.get("content-type") || "";
 
-  if (!res.ok) {
-    const errorText = contentType.includes("application/json")
-      ? await res.json()
-      : await res.text();
-    const errorMessage = contentType.includes("application/json")
-      ? errorText.error || `HTTP ${res.status}`
-      : `HTML response: ${res.status}`;
-    throw new Error(errorMessage);
-  }
+      if (!res.ok) {
+        const errorData = contentType.includes("application/json")
+          ? await res.json()
+          : await res.text();
+        const message = contentType.includes("application/json")
+          ? errorData.error || `HTTP ${res.status}`
+          : `HTML response: ${res.status}`;
+        throw new Error(message);
+      }
 
-  if (!contentType.includes("application/json")) {
-    const htmlText = await res.text();
-    console.error("⚠️ Expected JSON but got HTML:", htmlText);
-    throw new Error("Server did not return JSON.");
-  }
+      if (!contentType.includes("application/json")) {
+        const htmlPreview = await res.text();
+        console.error("⚠️ Expected JSON but got HTML:", htmlPreview.slice(0, 200));
+        throw new Error("Server did not return valid JSON.");
+      }
 
-  return res.json();
-})
-
+      return res.json();
+    })
     .then((data) => {
       console.log("✅ DASHBOARD DATA:", data);
 
       document.getElementById("username").textContent = data.username || "User";
       document.getElementById("uploadCount").textContent = data.uploads?.length || 0;
-      document.getElementById("lastLogin").textContent = new Date(data.lastLogin).toLocaleDateString();
+      document.getElementById("lastLogin").textContent = new Date(data.lastLogin).toLocaleString();
 
       const grid = document.getElementById("upload-grid");
       if (Array.isArray(data.uploads)) {
@@ -307,6 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Failed to load dashboard data: " + err.message);
     });
 });
+
 
   </script>
 </body>
