@@ -161,22 +161,56 @@
   </div>
 
   <script>
-    function login() {
-      const email = document.getElementById('login-email').value;
-      const password = document.getElementById('login-password').value;
+  async function login() {
+    const email = document.getElementById('login-email').value.trim().toLowerCase();
+    const password = document.getElementById('login-password').value;
+    const loginBtn = document.querySelector("button");
 
-      const users = JSON.parse(localStorage.getItem('users')) || [];
-      const user = users.find(u => u.email === email && u.password === password);
-
-      if (user) {
-        alert(`Welcome, ${user.name || user.email}!`);
-        localStorage.setItem('loggedInUser', JSON.stringify(user));
-        window.location.href = 'dashboard.html';
-      } else {
-        alert('Invalid email or password.');
-      }
+    if (!email || !password) {
+      alert('Please enter both email and password.');
+      return;
     }
-  </script>
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = "Logging in...";
+
+    const backendURL = window.location.hostname.includes("localhost")
+      ? "http://localhost:10000"
+      : "https://lens-backend-73wi.onrender.com";
+
+    try {
+      const response = await fetch(`${backendURL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const contentType = response.headers.get('content-type');
+
+      if (contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+
+        if (response.ok && data.token) {
+          localStorage.setItem('authToken', data.token);
+          alert(`Welcome back!`);
+          window.location.href = 'dashboard.html';
+        } else {
+          throw new Error(data.message || "Login failed.");
+        }
+      } else {
+        const text = await response.text();
+        throw new Error(`Unexpected response: ${text}`);
+      }
+    } catch (err) {
+      console.error("❌ Login error:", err);
+      alert("Login failed: " + err.message);
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Log In";
+    }
+  }
+</script>
+
 
 </body>
 </html>
