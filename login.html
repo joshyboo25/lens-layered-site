@@ -1,3 +1,4 @@
+<!-- login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +8,7 @@
   <link rel="icon" href="logo/lenslogo.png" />
   <link rel="stylesheet" href="assets/css/styles.css" />
   <style>
-    * { box-sizing: border-box; }
+        * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -162,58 +163,40 @@
   </div>
 
   <script>
-  async function login() {
-    const email = document.getElementById('login-email').value.trim().toLowerCase();
-    const password = document.getElementById('login-password').value;
-    const loginBtn = document.querySelector("button");
+<script type="module">
+import auth from './services/auth.js'; // adjust path
 
-    if (!email || !password) {
-      alert('Please enter both email and password.');
-      return;
-    }
+async function login() {
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const password = document.getElementById('login-password').value;
+  const loginBtn = document.querySelector("button");
 
-    loginBtn.disabled = true;
-    loginBtn.textContent = "Logging in...";
-
-    const backendURL = window.location.hostname.includes("localhost")
-      ? "http://localhost:5000"
-      : "https://lens-backend-73wi.onrender.com";
-
-    try {
-      const response = await fetch(`${backendURL}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const contentType = response.headers.get('content-type');
-
-      if (contentType && contentType.includes('application/json')) {
-        const data = await response.json();
-
-        if (response.ok && data.token) {
-          localStorage.setItem('authToken', data.token);
-          alert(`Welcome back!`);
-          window.location.href = 'dashboard.html';
-        } else {
-          throw new Error(data.message || "Login failed.");
-        }
-      } else {
-        const text = await response.text();
-        throw new Error(`Unexpected response: ${text}`);
-      }
-    } catch (err) {
-      console.error("❌ Login error:", err);
-      alert("Login failed: " + err.message);
-    } finally {
-      loginBtn.disabled = false;
-      loginBtn.textContent = "Log In";
-    }
+  if (!email || !password) {
+    alert('Please enter both email and password.');
+    return;
   }
+
+  loginBtn.disabled = true;
+  loginBtn.textContent = "Logging in...";
+
+  try {
+    await auth.loginUser(email, password);
+    alert(`Welcome back!`);
+    window.location.href = '/dashboard.html';
+  } catch (error) {
+    alert('Login failed: ' + error.message);
+  } finally {
+    loginBtn.disabled = false;
+    loginBtn.textContent = "Log In";
+  }
+}
+
 </script>
 
+  </script>
 
 </body>
 </html>
+
 
 

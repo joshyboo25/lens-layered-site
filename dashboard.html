@@ -196,18 +196,27 @@
     <p>Follow us on <a href="https://instagram.com/lenslayeredDesigns" target="_blank">Instagram</a></p>
   </footer>
 
-  <script>
-   function logout() {
-  localStorage.removeItem('authToken');
-  localStorage.removeItem('user');
+  <script type="module">
+import auth from './services/auth.js';
+import api from './utils/api.js'; // reuse our clean API layer
+
+const backendURL = window.location.hostname.includes('localhost')
+  ? 'http://localhost:5000'
+  : 'https://lens-backend-production-6f1d.up.railway.app';
+
+// Logout function
+function logout() {
+  auth.logoutUser();
   window.location.href = 'login.html';
 }
 
+// Home button function
 function home() {
-  window.location.href = 'home.html'; // Use 'index.html' unless you have a real 'home.html'
+  window.location.href = 'home.html'; // or index.html
 }
 
-function uploadImage() {
+// Upload Image function
+async function uploadImage() {
   const token = localStorage.getItem("authToken");
   const fileInput = document.getElementById("uploadInput");
   const file = fileInput?.files?.[0];
@@ -220,29 +229,32 @@ function uploadImage() {
   const formData = new FormData();
   formData.append("image", file);
 
-  fetch("https://lens-backend-73wi.onrender.com/api/user/upload", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: formData,
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.success) {
-        alert("Upload successful!");
-        location.reload(); // Refresh to show new upload
-      } else {
-        throw new Error(data.error || "Upload failed.");
-      }
-    })
-    .catch((err) => {
-      console.error("❌ Upload error:", err);
-      alert("Upload failed: " + err.message);
+  try {
+    const response = await fetch(`${backendURL}/api/user/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        // no manual Content-Type needed; FormData handles it
+      },
+      body: formData
     });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert("✅ Upload successful!");
+      location.reload(); // Refresh to show new upload
+    } else {
+      throw new Error(data.message || "Upload failed.");
+    }
+  } catch (err) {
+    console.error("❌ Upload error:", err);
+    alert("Upload failed: " + err.message);
+  }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+// Dashboard data loader
+document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("authToken");
 
   if (!token) {
@@ -253,60 +265,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("🔐 Token being sent:", token);
 
-  fetch("https://lens-backend-73wi.onrender.com/api/user/dashboard", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then(async (res) => {
-      const contentType = res.headers.get("content-type") || "";
-
-      if (!res.ok) {
-        const errorData = contentType.includes("application/json")
-          ? await res.json()
-          : await res.text();
-        const message = contentType.includes("application/json")
-          ? errorData.error || `HTTP ${res.status}`
-          : `HTML response: ${res.status}`;
-        throw new Error(message);
+  try {
+    const response = await fetch(`${backendURL}/api/user/dashboard`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
       }
-
-      if (!contentType.includes("application/json")) {
-        const htmlPreview = await res.text();
-        console.error("⚠️ Expected JSON but got HTML:", htmlPreview.slice(0, 200));
-        throw new Error("Server did not return valid JSON.");
-      }
-
-      return res.json();
-    })
-    .then((data) => {
-      console.log("✅ DASHBOARD DATA:", data);
-
-      document.getElementById("username").textContent = data.username || "User";
-      document.getElementById("uploadCount").textContent = data.uploads?.length || 0;
-      document.getElementById("lastLogin").textContent = new Date(data.lastLogin).toLocaleString();
-
-      const grid = document.getElementById("upload-grid");
-      if (Array.isArray(data.uploads)) {
-        data.uploads.forEach((src) => {
-          const img = document.createElement("img");
-          img.src = src;
-          img.alt = "User Upload";
-          img.style.borderRadius = "10px";
-          img.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
-          img.style.width = "100%";
-          img.style.height = "auto";
-          grid.appendChild(img);
-        });
-      }
-    })
-    .catch((err) => {
-      console.error("❌ Dashboard fetch failed:", err);
-      alert("Failed to load dashboard data: " + err.message);
     });
+
+    const contentType = response.headers.get("content-type") || "";
+
+    if (!response.ok) {
+      const errorData = contentType.includes("application/json")
+        ? await response.json()
+        : await response.text();
+      const message = typeof errorData === 'object' ? errorData.message : errorData;
+      throw new Error(message || `HTTP ${response.status}`);
+    }
+
+    if (!contentType.includes("application/json")) {
+      const htmlPreview = await response.text();
+      console.error("⚠️ Expected JSON but got HTML:", htmlPreview.slice(0, 200));
+      throw new Error("Server did not return valid JSON.");
+    }
+
+    const data = await response.json();
+    console.log("✅ DASHBOARD DATA:", data);
+
+    // Populate dashboard
+    document.getElementById("username").textContent = data.username || "User";
+    document.getElementById("uploadCount").textContent = data.uploads?.length || 0;
+    document.getElementById("lastLogin").textContent = new Date(data.lastLogin).toLocaleString();
+
+    const grid = document.getElementById("upload-grid");
+    if (Array.isArray(data.uploads)) {
+      data.uploads.forEach((src) => {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "User Upload";
+        img.style.borderRadius = "10px";
+        img.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
+        img.style.width = "100%";
+        img.style.height = "auto";
+        grid.appendChild(img);
+      });
+    }
+  } catch (err) {
+    console.error("❌ Dashboard fetch failed:", err);
+    alert("Failed to load dashboard data: " + err.message);
+  }
 });
+</script>
 
-
-  </script>
 </body>
 </html>
