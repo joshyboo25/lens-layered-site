@@ -1,83 +1,104 @@
-# ✨ Lens & Layered Designs – Frontend
+# 📦 Lens & Layered Designs – Backend
 
-Welcome to the official frontend of **Lens & Layered Designs** – a visual project that blends automotive culture, street photography, and curated design into a unique user experience.
+This is the backend server for **Lens & Layered Designs**, a photography-focused platform with secure authentication and protected user routes.
 
-This frontend is built with HTML, CSS, and JavaScript, with features designed for interactivity, visual appeal, and secure user experiences.
-
----
-
-## 🖥️ Live Preview
-
-🌐 [https://lenslayereddesigns.netlify.app](https://lenslayereddesigns.netlify.app)
+Built with **Node.js**, **Express**, and **MongoDB**, this backend handles user authentication, JWT token verification, and serves as the API layer for the frontend app.
 
 ---
 
-## ⚙️ Tech Stack
+## 🚀 Features
 
-- **HTML5 / CSS3 / JavaScript**
-- **Netlify** (for deployment)
-- **Custom Vanilla JS** logic (no frameworks)
-- **Mobile-first responsive design**
-- **Secure backend integration via REST API**
-
----
-
-## 🔐 Security Policy
-
-At **Lens & Layered Designs**, we take platform and user security seriously. This frontend is constantly evolving alongside our backend infrastructure.
-
-### 🧩 Current Measures
-
-- **HTTPS everywhere** – All live environments enforce secure connections.
-- **Minimal data collection** – We only ask for what's necessary via forms (e.g., name, email).
-- **No data selling, ever** – Privacy is not a product.
-- **Trusted third-party tools** – Any embeds, forms, or integrations are vetted and controlled.
-- **API requests secured** – Token-based authentication with backend routes.
+- 🔐 User Signup & Login (with hashed passwords)
+- ✅ JWT-based Authentication
+- 🔒 Protected Routes (via middleware)
+- 🌐 CORS Enabled for frontend communication
+- 📦 MongoDB integration via Mongoose
 
 ---
 
-### 🔒 Reporting Vulnerabilities
+## 🛠 Tech Stack
 
-If you discover a bug or vulnerability, report it directly:
-
-- 📧 **Email:** lens.layereddesigns@gmail.com
-- 📬 **Contact Page:** [lenslayereddesigns.netlify.app/contact](https://lenslayereddesigns.netlify.app/contact)
-- 📸 **Instagram DM:** [@lenslayeredDesigns](https://instagram.com/lenslayeredDesigns)
-
-We encourage responsible disclosure and respond ASAP to protect our users.
-
----
-
-## 🧪 Features in Progress
-
-We're actively working on:
-
-- 🔐 Secure login & signup system
-- 🧑‍🎨 User dashboards & upload permissions
-- 🖼️ Private galleries + role-based access
-- ⚙️ Light admin CMS features for custom content
-- 🛒 Shopping cart and checkout system
+- **Node.js**
+- **Express**
+- **MongoDB + Mongoose**
+- **bcryptjs** (for password hashing)
+- **jsonwebtoken** (for token auth)
+- **dotenv** (for env variable management)
+- **Render** (for deployment)
 
 ---
 
-## 🧑‍💻 Contributing
+## 🔧 Local Setup
 
-This is a closed project for now — contributions are limited to approved collaborators. If you're working on this codebase:
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/joshyboo25/lens-backend.git
+   cd lens-backend
+Install dependencies
+npm install
 
-- Don’t commit API keys, tokens, or secrets
-- Keep image file sizes optimized
-- Use descriptive commit messages and branches for features
-- Avoid pushing to `main` without testing
+Create a .env file in the root:
+PORT=5000
+MONGO_URI=your_mongo_connection_string
+JWT_SECRET=your_super_secret_key
 
----
+Run the server
+npm run dev  # for dev mode with nodemon
+npm start     # for production
 
-## 🛑 Usage Restrictions
+📬 API Endpoints
+🔐 Auth Routes (/api/auth)
+Method | Endpoint | Description
+POST | /signup | Register new user
+POST | /login | Authenticate & get JWT token
 
-This project is the exclusive property of **Lens & Layered Designs**.  
-Unauthorized reproduction, cloning, reuse of layout/designs, or hosting under a different name is strictly prohibited and will result in legal action.
+🔒 Protected Routes (/api/dashboard)
+Method | Endpoint | Description | Auth Required
+GET | /dashboard | Test token-protected route | ✅
 
----
+Protected routes require the Authorization header:
+Authorization: Bearer YOUR_JWT_TOKEN
 
-## 🗓️ Last Updated
+🧪 Sample Response
+json
+Copy
+Edit
 
-April 20, 2025
+{
+  "message": "Login successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": "660f1b79c7e9ae0f0f3c1c20",
+    "username": "exampleUser",
+    "email": "example@email.com"
+  }
+}
+
+🧠 Future Plans
+Add role-based permissions (e.g. admin vs user)
+
+Connect to full product/shop system
+
+Add user profiles and dashboard data
+
+
+🔗 Deployment
+This backend is deployed via Render:
+
+Live API URL:
+https://lens-backend-uh36.onrender.com
+
+🙌 Author
+Built by Josh Collins
+GitHub: @joshyboo25
+Project: Lens & Layered Designs
+
+
+
+## 🔒 License
+
+This project is **not open source** and is protected under **All Rights Reserved**.
+
+You may not copy, distribute, or use any part of this backend code without **explicit written permission** from the project owner.
+
+© 2025 Josh Collins. All rights reserved.
