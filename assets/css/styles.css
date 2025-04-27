@@ -77,66 +77,99 @@ nav a {
 /* Hero Section */
 #hero {
   background-color: #FF7F50;
-  padding: 3rem 2rem;
+  padding: 4rem 2rem; /* Bigger top/bottom padding = stronger visual punch */
   text-align: center;
+  color: #fff; /* Explicitly set hero text color */
 }
 
 /* Section Layout */
 section {
   background-color: #2b2b2b;
   color: #ffffff;
-  padding: 2rem;
-  max-width: 900px;
-  margin: auto;
+  padding: 3rem 2rem; /* Slightly more breathing room */
+  max-width: 1000px; /* Wider container for modern feel */
+  margin: 2rem auto; /* Add vertical spacing between sections */
+  border-radius: 1rem; /* Soft rounded edges for modern card feel */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle card shadow */
 }
 
-/* About Styling */
-.about-page h2,
-.about-page h3,
-.about-page p,
-.about-page ul,
-.about-page li {
-  color: #ffffff;
-}
-
+/* About Page Modern Styling */
 .about-page {
   text-align: center;
-  padding: 4rem 2rem;
+  padding: 5rem 2rem;
   line-height: 1.8;
   font-size: 1rem;
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.about-page h2,
+.about-page h3 {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.about-page p {
+  color: #cccccc;
+  font-size: 1.15rem;
+  margin-bottom: 1.5rem;
 }
 
 .about-intro {
-  font-size: 1.2rem;
-  max-width: 750px;
-  margin: 0 auto 2rem;
-  color: #ccc;
+  font-size: 1.3rem;
+  max-width: 800px;
+  margin: 0 auto 2.5rem;
+  color: #bbbbbb;
+}
+
+.about-content {
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .about-content h3 {
-  font-size: 1.5rem;
-  color: #fff;
-  margin-top: 2rem;
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.about-content p {
+  margin-top: 1rem;
 }
 
 .about-content ul {
-  list-style-position: inside;
+  list-style: none;
   padding-left: 0;
+  margin-top: 1.5rem;
 }
 
 .about-content ul li {
-  margin-bottom: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  text-align: left;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
+
+.about-content ul li:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+
 
 /* Gallery Grid */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  padding: 3rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
+
 
 /* Gallery Items */
 .gallery-item {

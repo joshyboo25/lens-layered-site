@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up – Lens & Layered Designs</title>
   <link rel="icon" href="logo/lenslogo.png" />
+  <link rel="stylesheet" href="assets/css/dashboard.css" />
 
   <style>
     /* Reset + Centering */
@@ -160,9 +161,44 @@
   </p>
 </div>
 
-<!-- Signup JS -->
 <script type="module">
 import auth from './services/auth.js'; // Adjust path if needed
+
+// Toast Logic
+function showToast(message, type = "success") {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('show');
+  }, 100);
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => {
+      if (toast.classList.contains('error')) {
+        toast.classList.add('shake');
+      }
+      toast.remove();
+    }, 300);
+  }, 3000);
+}
+
+
+const funnySignupErrors = [
+  "💀 Whoa there buddy, signup failed.",
+  "📛 You broke it already? Try again.",
+  "🚫 That username probably cursed the server.",
+  "🙅‍♂️ System rejected your vibes. Retry.",
+  "🛑 Signup gone wrong, Netflix doc incoming."
+];
+
+function randomFunnySignupError() {
+  const index = Math.floor(Math.random() * funnySignupErrors.length);
+  return funnySignupErrors[index];
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('signup-form');
@@ -176,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const password = document.getElementById('signup-password').value;
 
     if (!username || !email || !password) {
-      alert("All fields are required.");
+      showToast("⚠️ All fields are required.", "error");
       return;
     }
 
@@ -185,9 +221,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       await auth.signupUser(username, email, password);
-      window.location.href = '/login.html';
+      showToast("✅ Account created! Redirecting to login...", "success");
+      setTimeout(() => {
+        window.location.href = 'login.html'; // ✅ relative path
+      }, 1500); // Give user a second to see the toast
     } catch (error) {
-      alert('Signup failed: ' + error.message);
+      console.error(error);
+      showToast(randomFunnySignupError(), "error");
     } finally {
       signupBtn.disabled = false;
       signupBtn.textContent = "Sign Up";
@@ -195,6 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+
 
 </body>
 </html>

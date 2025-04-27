@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login – Lens & Layered Designs</title>
   <link rel="icon" href="logo/lenslogo.png" />
+  <link rel="stylesheet" href="assets/css/dashboard.css" />
 
   <style>
     * { box-sizing: border-box; }
@@ -166,7 +167,43 @@
   </div>
 
 <script type="module">
-import auth from './services/auth.js'; // Adjust if your structure is different
+import auth from '/services/auth.js'; // Adjust if your structure is different
+
+// Toast Logic
+function showToast(message, type = "success") {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('show');
+  }, 100);
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => {
+      if (toast.classList.contains('error')) {
+        toast.classList.add('shake');
+      }
+      toast.remove();
+    }, 300);
+  }, 3000);
+}
+
+
+const funnyLoginErrors = [
+  "💀 Wrong password, wrong life.",
+  "🤡 You sure that's your account?",
+  "🧠 Forgot your own password huh.",
+  "🚷 Credentials denied. No entry.",
+  "😵‍💫 That ain't it chief."
+];
+
+function randomFunnyError() {
+  const index = Math.floor(Math.random() * funnyLoginErrors.length);
+  return funnyLoginErrors[index];
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('login-form');
@@ -179,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const password = document.getElementById('login-password').value;
 
     if (!email || !password) {
-      alert('Please enter both email and password.');
+      showToast('⚠️ Please enter both email and password.', 'error');
       return;
     }
 
@@ -188,10 +225,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       await auth.loginUser(email, password);
-      alert('Welcome back!');
-      window.location.href = '/dashboard.html';
+      showToast('✅ Welcome back, king 👑', 'success');
+      setTimeout(() => {
+        window.location.href = 'dashboard.html'; // ✅ Slight delay for better UX
+      }, 1500);
     } catch (err) {
-      alert('Login failed: ' + err.message);
+      console.error(err);
+      showToast(randomFunnyError(), 'error');
     } finally {
       loginBtn.disabled = false;
       loginBtn.textContent = "Log In";
@@ -199,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+
 
 </body>
 </html>
