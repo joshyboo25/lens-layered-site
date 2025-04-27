@@ -409,3 +409,27 @@ footer a {
   margin: 1rem 0;
   color: #fff;
 }
+
+.gallery-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #1e1e1e;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  margin: 1rem;
+}
+
+.gallery-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.gallery-caption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #aaa;
+  text-align: center;
+}

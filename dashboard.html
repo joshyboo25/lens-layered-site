@@ -6,223 +6,123 @@
   <title>User Dashboard – Lens & Layered Designs</title>
   <link rel="icon" href="logo/lenslogo.png" />
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/dashboard.css" />
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: linear-gradient(to right, #0f0f0f, #1a1a1a);
-      color: #f5f5f5;
-    }
-
-    .site-header {
-      background: rgba(0, 0, 0, 0.8);
-      padding: 1rem 2rem;
+    /* Lightbox styles */
+    .lightbox {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
       display: flex;
+      justify-content: center;
       align-items: center;
-      justify-content: space-between;
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      z-index: 9999;
     }
 
-    .site-logo {
-      height: 50px;
+    .lightbox-img {
+      max-width: 90%;
+      max-height: 85%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
     }
 
-    .site-title {
-      font-size: 1.8rem;
-      font-weight: 600;
-    }
-
-    .logout-btn {
-      background-color: #ff5733;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      font-weight: bold;
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
       color: #fff;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    .logout-btn:hover {
-      background-color: #e64a2e;
-    }
-
-    .dashboard-container {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    .sidebar {
-      width: 230px;
-      background: #111;
-      padding: 2rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      border-right: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .sidebar a {
-      color: #aaa;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: color 0.2s ease;
-    }
-
-    .sidebar a:hover,
-    .sidebar a.active {
-      color: #ff5733;
-    }
-
-    .dashboard-content {
-      flex: 1;
-      padding: 3rem;
-      background: #1e1e1e;
-    }
-
-    .dashboard-content h2 {
       font-size: 2rem;
-      margin-bottom: 2rem;
-      color: #fff;
-    }
-
-    .dashboard-widgets {
-      display: flex;
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .widget {
-      background: #2b2b2b;
-      padding: 1.5rem;
-      border-radius: 12px;
-      flex: 1;
-      text-align: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    }
-
-    .widget strong {
-      display: block;
-      font-size: 1.5rem;
-      margin-top: 0.5rem;
-      color: #ffbe76;
-    }
-
-    .upload-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-
-    .upload-grid img {
-      width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.3s ease;
-    }
-
-    .upload-grid img:hover {
-      transform: scale(1.03);
-    }
-
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      background-color: #0f0f0f;
-      color: #aaa;
-      font-size: 0.9rem;
-      border-top: 1px solid rgba(255,255,255,0.05);
-    }
-
-    footer a {
-      color: #ff5733;
-      text-decoration: none;
+      cursor: pointer;
     }
   </style>
 </head>
+
 <body>
-  <header class="site-header">
-    <img src="logo/lenslogo.png" alt="Lens&Layered Logo" class="site-logo" />
-    <h1 class="site-title">User Dashboard</h1>
-    <button class="logout-btn" onclick="logout()">Logout</button>
-    <button class="home-btn" onclick="home()">Home</button>
-  </header>
 
-  <main class="dashboard-container">
-    <aside class="sidebar">
-      <ul>
-        <li><a href="#overview" class="active">📊 Overview</a></li>
-        <li><a href="#uploads">📁 Uploads</a></li>
-        <li><a href="profile.html">👤 Profile</a></li>
-        <li><a href="about.html">⚙Contribute</a></li>
-      </ul>
-    </aside>
+<header class="site-header">
+  <img src="logo/lenslogo.png" alt="Lens&Layered Logo" class="site-logo" />
+  <h1 class="site-title">User Dashboard</h1>
+  <button class="logout-btn" id="logout-btn">Logout</button>
+  <button class="home-btn" id="home-btn">Home</button>
+</header>
 
-    <section class="dashboard-content">
-      <h2>Welcome back, <span id="username">User</span> 👋</h2>
-      <div class="dashboard-widgets">
-	  <div class="upload-form">
-  <h3>📤 Upload New Image</h3>
-  <input type="file" id="uploadInput" accept="image/*" />
-  <button class="logout-btn" onclick="uploadImage()">Upload</button>
+<main class="dashboard-container">
+  <aside class="sidebar">
+    <ul>
+      <li><a href="#overview" class="active">📊 Overview</a></li>
+      <li><a href="#uploads">📁 Uploads</a></li>
+      <li><a href="profile.html">👤 Profile</a></li>
+      <li><a href="about.html">⚙ Contribute</a></li>
+    </ul>
+  </aside>
+
+  <section class="dashboard-content">
+    <h2>Welcome back, <span id="username">User</span> 👋</h2>
+
+    <div class="dashboard-widgets">
+      <div class="upload-form">
+        <h3>📤 Upload New Image</h3>
+        <input type="file" id="uploadInput" accept="image/*" />
+        <button class="logout-btn" id="upload-btn">Upload</button>
+      </div>
+      <div class="widget">Total Uploads:<strong id="uploadCount">0</strong></div>
+      <div class="widget">Followers:<strong id="followerCount">--</strong></div>
+      <div class="widget">Last Login:<strong id="lastLogin">--</strong></div>
+    </div>
+
+    <div class="dashboard-section" id="uploads">
+      <h3>📁 Your Uploads</h3>
+      <p>Here's a quick look at your latest photos.</p>
+      <div class="upload-grid" id="upload-grid"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2025 Lens & Layered Designs</p>
+  <p>Follow us on <a href="https://instagram.com/lenslayeredDesigns" target="_blank">Instagram</a></p>
+</footer>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="lightbox" style="display: none;">
+  <span class="lightbox-close">&times;</span>
+  <img class="lightbox-img" src="" alt="Full Preview" />
 </div>
-        <div class="widget">Total Uploads:<strong id="uploadCount">0</strong></div>
-        <div class="widget">Followers:<strong id="followerCount">--</strong></div>
-        <div class="widget">Last Login:<strong id="lastLogin">--</strong></div>
-      </div>
 
-      <div class="dashboard-section" id="uploads">
-        <h3>📁 Your Uploads</h3>
-        <p>Here's a quick look at your latest photos.</p>
-        <div class="upload-grid" id="upload-grid">
-          <!-- Dynamically filled -->
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Lens & Layered Designs</p>
-    <p>Follow us on <a href="https://instagram.com/lenslayeredDesigns" target="_blank">Instagram</a></p>
-  </footer>
-
-  <script type="module">
+<script type="module">
 import auth from './services/auth.js';
-import api from './utils/api.js'; // reuse our clean API layer
 
 const backendURL = window.location.hostname.includes('localhost')
   ? 'http://localhost:5000'
   : 'https://lens-backend-production-6f1d.up.railway.app';
 
-// Logout function
-function logout() {
-  auth.logoutUser();
-  window.location.href = 'login.html';
-}
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById('logout-btn')?.addEventListener('click', () => {
+    auth.logoutUser();
+    window.location.href = 'login.html';
+  });
 
-// Home button function
-function home() {
-  window.location.href = 'home.html'; // or index.html
-}
+  document.getElementById('home-btn')?.addEventListener('click', () => {
+    window.location.href = 'home.html';
+  });
 
-// Upload Image function
+  document.getElementById('upload-btn')?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    await uploadImage();
+  });
+
+  loadDashboard();
+});
+
 async function uploadImage() {
   const token = localStorage.getItem("authToken");
   const fileInput = document.getElementById("uploadInput");
   const file = fileInput?.files?.[0];
 
   if (!file) {
-    alert("Please select an image.");
+    alert("Please select an image to upload.");
     return;
   }
 
@@ -234,7 +134,6 @@ async function uploadImage() {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
-        // no manual Content-Type needed; FormData handles it
       },
       body: formData
     });
@@ -243,9 +142,9 @@ async function uploadImage() {
 
     if (response.ok) {
       alert("✅ Upload successful!");
-      location.reload(); // Refresh to show new upload
+      location.reload();
     } else {
-      throw new Error(data.message || "Upload failed.");
+      throw new Error(data.error || "Upload failed.");
     }
   } catch (err) {
     console.error("❌ Upload error:", err);
@@ -253,24 +152,21 @@ async function uploadImage() {
   }
 }
 
-// Dashboard data loader
-document.addEventListener("DOMContentLoaded", async () => {
+async function loadDashboard() {
   const token = localStorage.getItem("authToken");
 
   if (!token) {
-    alert("Please log in first.");
+    alert("Session expired. Please log in again.");
     window.location.href = "login.html";
     return;
   }
-
-  console.log("🔐 Token being sent:", token);
 
   try {
     const response = await fetch(`${backendURL}/api/user/dashboard`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       }
     });
 
@@ -280,30 +176,24 @@ document.addEventListener("DOMContentLoaded", async () => {
       const errorData = contentType.includes("application/json")
         ? await response.json()
         : await response.text();
-      const message = typeof errorData === 'object' ? errorData.message : errorData;
-      throw new Error(message || `HTTP ${response.status}`);
-    }
-
-    if (!contentType.includes("application/json")) {
-      const htmlPreview = await response.text();
-      console.error("⚠️ Expected JSON but got HTML:", htmlPreview.slice(0, 200));
-      throw new Error("Server did not return valid JSON.");
+      throw new Error(errorData.message || `HTTP ${response.status}`);
     }
 
     const data = await response.json();
-    console.log("✅ DASHBOARD DATA:", data);
 
-    // Populate dashboard
     document.getElementById("username").textContent = data.username || "User";
     document.getElementById("uploadCount").textContent = data.uploads?.length || 0;
     document.getElementById("lastLogin").textContent = new Date(data.lastLogin).toLocaleString();
 
     const grid = document.getElementById("upload-grid");
+    grid.innerHTML = "";
+
     if (Array.isArray(data.uploads)) {
       data.uploads.forEach((src) => {
         const img = document.createElement("img");
-        img.src = src;
+        img.src = `${backendURL}${src}`;
         img.alt = "User Upload";
+        img.className = "upload-image";
         img.style.borderRadius = "10px";
         img.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
         img.style.width = "100%";
@@ -315,8 +205,33 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("❌ Dashboard fetch failed:", err);
     alert("Failed to load dashboard data: " + err.message);
   }
+}
+
+// 🔥 Lightbox Logic
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.querySelector('.lightbox-img');
+const closeBtn = document.querySelector('.lightbox-close');
+
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('upload-image')) {
+    lightbox.style.display = 'flex';
+    lightboxImg.src = e.target.src;
+  }
 });
+
+closeBtn.addEventListener('click', () => {
+  lightbox.style.display = 'none';
+});
+
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) {
+    lightbox.style.display = 'none';
+  }
+});
+
 </script>
 
 </body>
 </html>
+
+

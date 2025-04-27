@@ -115,37 +115,65 @@
     &copy; 2025 Lens & Layered Designs
   </footer>
 
-  <script>
-    function enableEdit() {
-      document.getElementById('username').disabled = false;
-      document.getElementById('email').disabled = false;
-      document.querySelector('.btn-save').style.display = 'inline-block';
-    }
+  <script type="module">
+const backendURL = window.location.hostname.includes('localhost')
+  ? 'http://localhost:5000'
+  : 'https://lens-backend-production-6f1d.up.railway.app';
 
-    document.querySelector('.profile-info').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const username = document.getElementById('username').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const token = localStorage.getItem('authToken');
+document.addEventListener('DOMContentLoaded', () => {
+  const editBtn = document.querySelector('.btn-edit');
+  const saveBtn = document.querySelector('.btn-save');
+  const usernameInput = document.getElementById('username');
+  const emailInput = document.getElementById('email');
+  const profileForm = document.querySelector('.profile-info');
 
-      const res = await fetch('https://lens-backend-73wi.onrender.com/api/user/update', {
+  editBtn.addEventListener('click', () => {
+    usernameInput.disabled = false;
+    emailInput.disabled = false;
+    saveBtn.style.display = 'inline-block';
+    editBtn.disabled = true; // Optional UX move
+  });
+
+  profileForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = usernameInput.value.trim();
+    const email = emailInput.value.trim();
+    const token = localStorage.getItem('authToken');
+
+    try {
+      const res = await fetch(`${backendURL}/api/user/update`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ username, email })
+        body: JSON.stringify({
+          username,
+          email,
+          currentPassword: '',
+          newPassword: ''
+        })
       });
 
+      const data = await res.json();
+
       if (res.ok) {
-        alert('Profile updated successfully!');
-        document.getElementById('username').disabled = true;
-        document.getElementById('email').disabled = true;
-        document.querySelector('.btn-save').style.display = 'none';
+        alert('✅ Profile updated successfully!');
+        usernameInput.disabled = true;
+        emailInput.disabled = true;
+        saveBtn.style.display = 'none';
+        editBtn.disabled = false;
       } else {
-        alert('Failed to update profile.');
+        throw new Error(data.error || 'Update failed.');
       }
-    });
-  </script>
+    } catch (err) {
+      console.error('❌ Profile update error:', err);
+      alert('Failed to update profile: ' + err.message);
+    }
+  });
+});
+</script>
+
+
 </body>
 </html>

@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login – Lens&LayeredDesigns</title>
+  <title>Login – Lens & Layered Designs</title>
   <link rel="icon" href="logo/lenslogo.png" />
-  <link rel="stylesheet" href="assets/css/styles.css" />
+
   <style>
-        * { box-sizing: border-box; }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -140,6 +140,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="logo-overlay">
@@ -147,53 +148,57 @@
   </div>
 
   <div class="slideshow-bg">
-    <img src="slides/test8.jpg" alt="slide1">
-    <img src="slides/test9.jpg" alt="slide2">
-    <img src="slides/test6.jpg" alt="slide3">
-    <img src="slides/test7.jpg" alt="slide4">
-    <img src="slides/test10.jpg" alt="slide5">
+    <img src="slides/test8.jpg" alt="Slide 1">
+    <img src="slides/test9.jpg" alt="Slide 2">
+    <img src="slides/test6.jpg" alt="Slide 3">
+    <img src="slides/test7.jpg" alt="Slide 4">
+    <img src="slides/test10.jpg" alt="Slide 5">
   </div>
 
   <div class="auth-container">
     <h2>Log In</h2>
-    <input type="email" id="login-email" placeholder="Email" required />
-    <input type="password" id="login-password" placeholder="Password" required />
-    <button onclick="login()">Log In</button>
+    <form id="login-form">
+      <input type="email" id="login-email" placeholder="Email" required />
+      <input type="password" id="login-password" placeholder="Password" required />
+      <button id="login-btn" type="submit">Log In</button>
+    </form>
     <a href="signup.html">Need an account? Sign up</a>
   </div>
 
-  <script>
 <script type="module">
-import auth from './services/auth.js'; // adjust path
+import auth from './services/auth.js'; // Adjust if your structure is different
 
-async function login() {
-  const email = document.getElementById('login-email').value.trim().toLowerCase();
-  const password = document.getElementById('login-password').value;
-  const loginBtn = document.querySelector("button");
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('login-form');
+  const loginBtn = document.getElementById('login-btn');
 
-  if (!email || !password) {
-    alert('Please enter both email and password.');
-    return;
-  }
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  loginBtn.disabled = true;
-  loginBtn.textContent = "Logging in...";
+    const email = document.getElementById('login-email').value.trim().toLowerCase();
+    const password = document.getElementById('login-password').value;
 
-  try {
-    await auth.loginUser(email, password);
-    alert(`Welcome back!`);
-    window.location.href = '/dashboard.html';
-  } catch (error) {
-    alert('Login failed: ' + error.message);
-  } finally {
-    loginBtn.disabled = false;
-    loginBtn.textContent = "Log In";
-  }
-}
+    if (!email || !password) {
+      alert('Please enter both email and password.');
+      return;
+    }
 
+    loginBtn.disabled = true;
+    loginBtn.textContent = "Logging in...";
+
+    try {
+      await auth.loginUser(email, password);
+      alert('Welcome back!');
+      window.location.href = '/dashboard.html';
+    } catch (err) {
+      alert('Login failed: ' + err.message);
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Log In";
+    }
+  });
+});
 </script>
-
-  </script>
 
 </body>
 </html>
