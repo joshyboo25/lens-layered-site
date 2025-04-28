@@ -92,94 +92,76 @@
 </div>
 
 <script type="module">
-import auth from './services/auth.js';
+import auth from '/services/auth.js';
 
-const backendURL = window.location.hostname.includes('localhost')
-  ? 'http://localhost:5000'
-  : 'https://lens-backend-production-6f1d.up.railway.app';
+const backendURL = 'https://lens-backend-production-6f1d.up.railway.app';
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById('logout-btn')?.addEventListener('click', () => {
-    auth.logoutUser();
-    window.location.href = 'login.html';
-  });
+// --- Toast System ---
+function showToast(message, type = "success") {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.classList.add('show'), 100);
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
 
-  document.getElementById('home-btn')?.addEventListener('click', () => {
-    window.location.href = 'home.html';
-  });
+// --- Funny Login Fails ---
+const funnyLoginErrors = [
+  "💀 Wrong password, wrong life.",
+  "🤡 You sure that's your account?",
+  "🧠 Forgot your own password huh.",
+  "🚷 Credentials denied. No entry.",
+  "😵‍💫 That ain't it chief."
+];
+function randomFunnyError() {
+  return funnyLoginErrors[Math.floor(Math.random() * funnyLoginErrors.length)];
+}
 
-  document.getElementById('upload-btn')?.addEventListener('click', async (e) => {
-    e.preventDefault();
-    await uploadImage();
-  });
-
-  loadDashboard();
-});
-
-async function uploadImage() {
-  const token = localStorage.getItem("authToken");
-  const fileInput = document.getElementById("uploadInput");
-  const file = fileInput?.files?.[0];
-
-  if (!file) {
-    alert("Please select an image to upload.");
-    return;
+async function validateToken() {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    console.warn("🚫 No token found. Redirecting to login...");
+    throw new Error('No token found');
   }
 
-  const formData = new FormData();
-  formData.append("image", file);
-
   try {
-    const response = await fetch(`${backendURL}/api/user/upload`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-      body: formData
+    const response = await fetch(`${backendURL}/api/auth/validate`, {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    const data = await response.json();
-
-    if (response.ok) {
-      alert("✅ Upload successful!");
-      location.reload();
-    } else {
-      throw new Error(data.error || "Upload failed.");
+    if (!response.ok) {
+      throw new Error('Invalid token from server');
     }
+
+    console.log("✅ Token valid");
+    return true;
+
   } catch (err) {
-    console.error("❌ Upload error:", err);
-    alert("Upload failed: " + err.message);
+    console.error("❌ Token invalid or validation failed:", err);
+    localStorage.removeItem('authToken');
+    window.location.href = 'login.html';
+    throw err;
   }
 }
 
-async function loadDashboard() {
-  const token = localStorage.getItem("authToken");
 
-  if (!token) {
-    alert("Session expired. Please log in again.");
-    window.location.href = "login.html";
-    return;
-  }
-
+// --- Load Dashboard ---
+async function loadUserDashboard() {
+  const token = localStorage.getItem('authToken');
   try {
     const response = await fetch(`${backendURL}/api/user/dashboard`, {
       method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+      headers: { 'Authorization': `Bearer ${token}` }
     });
-
-    const contentType = response.headers.get("content-type") || "";
-
-    if (!response.ok) {
-      const errorData = contentType.includes("application/json")
-        ? await response.json()
-        : await response.text();
-      throw new Error(errorData.message || `HTTP ${response.status}`);
-    }
+    if (!response.ok) throw new Error('Failed to load dashboard');
 
     const data = await response.json();
+    console.log("📈 Dashboard data:", data);
 
     document.getElementById("username").textContent = data.username || "User";
     document.getElementById("uploadCount").textContent = data.uploads?.length || 0;
@@ -187,69 +169,137 @@ async function loadDashboard() {
 
     const grid = document.getElementById("upload-grid");
     grid.innerHTML = "";
-
-    if (Array.isArray(data.uploads) && data.uploads.length > 0) {
+    if (data.uploads.length > 0) {
       data.uploads.forEach((src) => {
-        const img = document.createElement("img");
+        const img = document.createElement('img');
         img.src = `${backendURL}${src}`;
         img.alt = "User Upload";
         img.className = "upload-image";
-        img.style.borderRadius = "10px";
-        img.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
-        img.style.width = "100%";
-        img.style.height = "auto";
         grid.appendChild(img);
       });
     } else {
       grid.innerHTML = "<p style='color: #aaa; text-align: center;'>No uploads yet. Get started above 👆</p>";
     }
   } catch (err) {
-    console.error("❌ Dashboard fetch failed:", err);
-    alert("Failed to load dashboard data: " + err.message);
+    console.error('Dashboard load error:', err);
+    showToast("Failed to load dashboard", "error");
   }
 }
 
+// --- Upload Image ---
+async function uploadImage() {
+  const token = localStorage.getItem('authToken');
+  const fileInput = document.getElementById('uploadInput');
+  const file = fileInput?.files?.[0];
 
-// 🔥 Lightbox Logic
-const lightbox = document.getElementById('lightbox');
-const lightboxImg = document.querySelector('.lightbox-img');
-const closeBtn = document.querySelector('.lightbox-close');
-
-document.addEventListener('click', (e) => {
-  if (e.target.classList.contains('upload-image')) {
-    lightbox.style.display = 'flex';
-    lightboxImg.src = e.target.src;
+  if (!file) {
+    showToast('⚠️ Please select a file first.', 'error');
+    return;
   }
-});
 
-closeBtn.addEventListener('click', () => {
-  lightbox.style.display = 'none';
-});
+  const formData = new FormData();
+  formData.append('image', file);
 
-lightbox.addEventListener('click', (e) => {
-  if (e.target === lightbox) {
-    lightbox.style.display = 'none';
+  try {
+    const response = await fetch(`${backendURL}/api/user/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Upload failed");
+    }
+
+    // Update upload count
+    const countElem = document.getElementById('uploadCount');
+    countElem.textContent = parseInt(countElem.textContent) + 1;
+
+    // Add uploaded image to grid
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    img.alt = "New Upload";
+    img.className = "upload-image";
+
+    const grid = document.getElementById("upload-grid");
+    grid.prepend(img);
+
+    showToast("✅ Upload successful!", "success");
+
+    fileInput.value = ""; // clear file input
+
+  } catch (err) {
+    console.error("Upload error:", err);
+    showToast("Upload failed: " + err.message, "error");
   }
-});
+}
 
-// Toast Logic
-function showToast(message, type = "success") {
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-  toast.textContent = message;
-  document.body.appendChild(toast);
+// --- DOM Ready ---
+document.addEventListener('DOMContentLoaded', async () => {
+  const isDashboard = document.getElementById('dashboard-page'); // you can add id="dashboard-page" on your dashboard body tag
+  const isLoginPage = document.getElementById('login-form');
 
-  setTimeout(() => {
-    toast.classList.add('show');
-  }, 100);
+  if (isDashboard) {
+  try {
+    await validateToken();         // 🔥 Step 1: validate
+    await loadUserDashboard();     // 🔥 Step 2: load dashboard
+  } catch (err) {
+    console.error('❌ Failed to validate token or load dashboard:', err);
+    // No need to manually redirect here — validateToken already handled redirect
+  }
 
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => toast.remove(), 300);
-  }, 3000);
+  document.getElementById('logout-btn')?.addEventListener('click', () => {
+    auth.logoutUser();
+    window.location.href = 'login.html';
+  });
+
+  document.getElementById('home-btn')?.addEventListener('click', () => {
+    window.location.href = 'index.html'; // or whatever your home page is
+  });
+
+  document.getElementById('upload-btn')?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    await uploadImage();
+  });
 }
 
 
+  if (isLoginPage) {
+    const form = document.getElementById('login-form');
+    const loginBtn = document.getElementById('login-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
+      const password = document.getElementById('login-password').value;
+
+      if (!email || !password) {
+        showToast('⚠️ Please enter both email and password.', 'error');
+        return;
+      }
+
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Logging in...";
+
+      try {
+        await auth.loginUser(email, password);
+        showToast('✅ Welcome back, king 👑', 'success');
+        setTimeout(() => window.location.href = 'dashboard.html', 1500);
+      } catch (err) {
+        console.error(err);
+        showToast(randomFunnyError(), 'error');
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Log In";
+      }
+    });
+  }
+});
 </script>
 
 </body>

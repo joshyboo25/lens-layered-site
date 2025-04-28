@@ -1,3 +1,5 @@
+<!-- Finalized homepage gallery code -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lens & Layered Designs</title>
   <link rel="icon" href="logo/lenslogo.png" />
-
-  <!-- Link to CSS -->
   <link rel="stylesheet" href="assets/css/styles.css">
-
-  <!-- Link to JS -->
   <script defer src="assets/js/effects.js"></script>
 </head>
 <body>
@@ -18,7 +16,7 @@
   <div class="header-top">
     <img src="logo/lenslogo.png" alt="Lens&Layered Logo" class="site-logo" />
     <h1 class="site-title">Lens & Layered Designs</h1>
-    <a href="login.html" class="login-btn">Login / Sign Up</a>
+    <a href="login.html" id="auth-btn" class="login-btn">Login / Sign Up</a>
   </div>
   <nav>
     <ul>
@@ -30,27 +28,30 @@
   </nav>
 </header>
 
+<section id="hero">
+  <h2>Snapping Moments. Layering Meaning</h2>
+  <p>Visuals with soul — curated, captured, and created for you.</p>
+</section>
 
+<!-- Gallery Section -->
+<section id="gallery">
+  <h2 style="text-align:center;">For You</h2>
+  <div class="gallery-grid" id="gallery-grid">
+    <!-- Images will inject here -->
+  </div>
+  <div style="text-align:center; margin-top:2rem;">
+    <button id="load-more-btn" style="display:none; padding: 0.75rem 2rem; background-color: #ff5733; border:none; border-radius:8px; color:#fff; font-size:1rem; cursor:pointer;">
+      Load More
+    </button>
+  </div>
+</section>
 
-  <section id="hero">
-    <h2>Snapping Moments. Layering Meaning</h2>
-    <p>Visuals with soul — curated, captured, and created for you.</p>
-  </section>
+<footer>
+  <p>&copy; 2025 Lens & Layered Designs</p>
+  <p>Follow us on <a href="https://instagram.com/lenslayeredDesigns" target="_blank">Instagram</a></p>
+</footer>
 
-  <!-- Gallery Section -->
-  <section id="gallery">
-    <h2 style="text-align:center;">Gallery</h2>
-    <div class="gallery-grid" id="gallery-grid">
-      <!-- Images injected by JS -->
-    </div>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 Lens & Layered Designs</p>
-    <p>Follow us on <a href="https://instagram.com/lenslayeredDesigns" target="_blank">Instagram</a></p>
-  </footer>
-  
- <!-- Lightbox HTML -->
+<!-- Lightbox HTML -->
 <div id="lightbox" class="lightbox" style="display: none;">
   <span class="lightbox-close">&times;</span>
   <span class="lightbox-prev">&#10094;</span>
@@ -58,6 +59,128 @@
   <div class="lightbox-caption"></div>
   <span class="lightbox-next">&#10095;</span>
 </div>
+
+<script type="module">
+const backendURL = window.location.hostname.includes('localhost')
+  ? 'http://localhost:5000'
+  : 'https://lens-backend-production-6f1d.up.railway.app';
+
+let allUploads = [];
+let currentIndex = 0;
+const uploadsPerLoad = 6;
+
+async function loadGallery() {
+  const galleryGrid = document.getElementById('gallery-grid');
+  const loadMoreBtn = document.getElementById('load-more-btn');
+
+  try {
+    const response = await fetch(`${backendURL}/api/user/all-uploads`);
+    const result = await response.json();
+    allUploads = result.uploads || [];
+
+    if (allUploads.length === 0) {
+      galleryGrid.innerHTML = "<p>No uploads yet. Be the first to share! 📸</p>";
+      loadMoreBtn.style.display = "none";
+      return;
+    }
+
+    galleryGrid.innerHTML = ""; // 🧹 Only clear *after* confirming uploads exist
+    renderNextUploads();
+    loadMoreBtn.style.display = allUploads.length > uploadsPerLoad ? "block" : "none";
+
+  } catch (err) {
+    console.error("❌ Failed to load gallery:", err);
+    galleryGrid.innerHTML = "<p>Error loading gallery. Try again later. 🚧</p>";
+    loadMoreBtn.style.display = "none";
+  }
+}
+
+function renderNextUploads() {
+  const galleryGrid = document.getElementById('gallery-grid');
+  const loadMoreBtn = document.getElementById('load-more-btn');
+
+  const uploadsToRender = allUploads.slice(currentIndex, currentIndex + uploadsPerLoad);
+
+  uploadsToRender.forEach(({ src, username }, index) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'gallery-item-wrapper visible';
+    wrapper.style.setProperty('--delay', `${index * 0.1}s`); // 🎯 Smooth stagger fade in
+
+    const card = document.createElement('div');
+    card.className = 'gallery-card';
+
+    const img = document.createElement('img');
+    img.src = `${backendURL}${src}`;
+    img.alt = `${username}'s upload`;
+    img.className = 'gallery-image';
+    img.loading = "lazy"; // 💤 Lazy loading for faster page speeds!
+
+    const caption = document.createElement('p');
+    caption.textContent = `Uploaded by @${username}`;
+    caption.className = 'gallery-caption';
+
+    card.appendChild(img);
+    card.appendChild(caption);
+    wrapper.appendChild(card);
+    galleryGrid.appendChild(wrapper);
+  });
+
+  currentIndex += uploadsPerLoad;
+
+  if (currentIndex >= allUploads.length) {
+    loadMoreBtn.style.opacity = '0';
+    setTimeout(() => loadMoreBtn.style.display = "none", 500);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadGallery();
+  document.getElementById('load-more-btn')?.addEventListener('click', renderNextUploads);
+
+  // === Lightbox ===
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.querySelector('.lightbox-img');
+  const lightboxCaption = document.querySelector('.lightbox-caption');
+  const lightboxClose = document.querySelector('.lightbox-close');
+
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('gallery-image')) {
+      lightbox.style.display = 'flex';
+      lightboxImg.src = e.target.src;
+      lightboxCaption.textContent = e.target.alt;
+    }
+  });
+
+  lightboxClose.addEventListener('click', () => {
+    lightbox.style.display = 'none';
+    lightboxImg.src = '';
+    lightboxCaption.textContent = '';
+  });
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      lightbox.style.display = 'none';
+      lightboxImg.src = '';
+      lightboxCaption.textContent = '';
+    }
+  });
+
+  // === Auth Button Switcher ===
+  const authBtn = document.getElementById('auth-btn');
+  const token = localStorage.getItem('token');
+
+  if (authBtn) {
+    if (token) {
+      authBtn.textContent = "Account";
+      authBtn.href = "dashboard.html";
+    } else {
+      authBtn.textContent = "Login / Sign Up";
+      authBtn.href = "login.html";
+    }
+  }
+});
+</script>
+
 
 
 

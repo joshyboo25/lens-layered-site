@@ -167,9 +167,8 @@
   </div>
 
 <script type="module">
-import auth from '/services/auth.js'; // Adjust if your structure is different
+import auth from '/services/auth.js';
 
-// Toast Logic
 function showToast(message, type = "success") {
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
@@ -191,7 +190,6 @@ function showToast(message, type = "success") {
   }, 3000);
 }
 
-
 const funnyLoginErrors = [
   "💀 Wrong password, wrong life.",
   "🤡 You sure that's your account?",
@@ -201,44 +199,58 @@ const funnyLoginErrors = [
 ];
 
 function randomFunnyError() {
-  const index = Math.floor(Math.random() * funnyLoginErrors.length);
-  return funnyLoginErrors[index];
+  return funnyLoginErrors[Math.floor(Math.random() * funnyLoginErrors.length)];
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  console.log("🔥 Clearing old tokens...");
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('expireTime');
+
   const form = document.getElementById('login-form');
   const loginBtn = document.getElementById('login-btn');
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  if (form && loginBtn) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-    const email = document.getElementById('login-email').value.trim().toLowerCase();
-    const password = document.getElementById('login-password').value;
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
+      const password = document.getElementById('login-password').value;
 
-    if (!email || !password) {
-      showToast('⚠️ Please enter both email and password.', 'error');
-      return;
-    }
+      if (!email || !password) {
+        showToast('⚠️ Please enter both email and password.', 'error');
+        return;
+      }
 
-    loginBtn.disabled = true;
-    loginBtn.textContent = "Logging in...";
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Logging in...";
 
-    try {
-      await auth.loginUser(email, password);
-      showToast('✅ Welcome back, king 👑', 'success');
-      setTimeout(() => {
-        window.location.href = 'dashboard.html'; // ✅ Slight delay for better UX
-      }, 1500);
-    } catch (err) {
-      console.error(err);
-      showToast(randomFunnyError(), 'error');
-    } finally {
-      loginBtn.disabled = false;
-      loginBtn.textContent = "Log In";
-    }
-  });
+      try {
+        const result = await auth.loginUser(email, password);
+        console.log("🐞 Login result:", result);
+
+        if (!result.token) throw new Error("No token returned!");
+
+        showToast('✅ Welcome back, king 👑', 'success');
+
+        setTimeout(() => {
+          window.location.href = '/dashboard.html';
+        }, 1500);
+
+      } catch (err) {
+        console.error("❌ Login failed:", err);
+        showToast(randomFunnyError(), 'error');
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Login";
+      }
+    });
+  }
 });
+
 </script>
+
+
 
 
 </body>

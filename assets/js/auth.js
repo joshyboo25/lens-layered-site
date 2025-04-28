@@ -14,13 +14,16 @@ const auth = {
     }
   },
 
-  loginUser: async (email, password) => {
+loginUser: async (email, password) => {
   try {
-    localStorage.removeItem('authToken'); // 🧹 wipe any junk
+    // Wipe old token first
+    localStorage.removeItem('authToken');
+
     const data = await api.login(email, password);
+
     if (data.token) {
-      console.log('✅ New token received:', data.token); // ADD THIS
       localStorage.setItem('authToken', data.token);
+      console.log('✅ Login success:', data);
       return data;
     } else {
       throw new Error(data.message || "Login failed.");
@@ -31,18 +34,33 @@ const auth = {
   }
 }
 
-  
-  isLoggedIn: () => {
-    const token = localStorage.getItem('authToken');
-    return !!token;
+
+  loginUser: async (email, password) => {
+    try {
+      const data = await api.login(email, password);
+      if (data.token) {
+        localStorage.setItem('authToken', data.token);
+        console.log('✅ Login success:', data);
+        return data;
+      } else {
+        throw new Error(data.message || "Login failed.");
+      }
+    } catch (error) {
+      console.error('❌ Login failed:', error.message);
+      throw error;
+    }
   },
 
   logoutUser: () => {
     localStorage.removeItem('authToken');
     console.log('🚪 Logged out');
+  },
+
+  isLoggedIn: () => {
+    const token = localStorage.getItem('authToken');
+    return !!token;
   }
 };
 
 export default auth;
-
 

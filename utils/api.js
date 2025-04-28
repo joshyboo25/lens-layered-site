@@ -2,28 +2,26 @@
 
 const backendURL = window.location.hostname.includes('localhost')
   ? 'http://localhost:5000'
-  : 'https://lens-backend-production-6f1d.up.railway.app';
-
-const fallbackBackendURL = ''; // optional backup if you deploy a mirror
+  : 'https://lens-backend-production-6f1d.up.railway.app'; // Already correct
 
 async function safeFetch(path, options = {}) {
   try {
-    const response = await fetch(`${backendURL}${path}`, options);
+    const response = await fetch(`${backendURL}${path}`, {
+      ...options,
+      headers: {
+        ...options.headers,
+        'Accept': 'application/json', // <<< Add these
+      },
+      credentials: 'include' // <<< Important to send cookies/session
+    });
     if (!response.ok) throw new Error('Primary backend failed');
     return response;
   } catch (error) {
     console.warn('⚠️ Primary backend failed:', error.message);
-    if (fallbackBackendURL) {
-      const fallbackResponse = await fetch(`${fallbackBackendURL}${path}`, options);
-      if (!fallbackResponse.ok) throw new Error('Fallback backend also failed');
-      return fallbackResponse;
-    } else {
-      throw new Error('Both primary and fallback backend failed');
-    }
+    throw new Error('Both primary and fallback backend failed');
   }
 }
 
-// Core API functions
 const api = {
   signup: async (username, email, password) => {
     const response = await safeFetch('/api/auth/signup', {
@@ -49,8 +47,8 @@ const api = {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
+        'Accept': 'application/json',
+      }
     });
     return response.json();
   },
@@ -72,3 +70,4 @@ const api = {
 };
 
 export default api;
+

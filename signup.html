@@ -162,9 +162,10 @@
 </div>
 
 <script type="module">
-import auth from './services/auth.js'; // Adjust path if needed
 
-// Toast Logic
+import auth from '/services/auth.js';
+
+
 function showToast(message, type = "success") {
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
@@ -186,7 +187,6 @@ function showToast(message, type = "success") {
   }, 3000);
 }
 
-
 const funnySignupErrors = [
   "💀 Whoa there buddy, signup failed.",
   "📛 You broke it already? Try again.",
@@ -196,45 +196,60 @@ const funnySignupErrors = [
 ];
 
 function randomFunnySignupError() {
-  const index = Math.floor(Math.random() * funnySignupErrors.length);
-  return funnySignupErrors[index];
+  return funnySignupErrors[Math.floor(Math.random() * funnySignupErrors.length)];
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  console.log("🔥 Clearing old tokens...");
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('expireTime');
+
   const form = document.getElementById('signup-form');
   const signupBtn = document.getElementById('signup-btn');
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  if (form && signupBtn) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-    const username = document.getElementById('signup-username').value.trim();
-    const email = document.getElementById('signup-email').value.trim().toLowerCase();
-    const password = document.getElementById('signup-password').value;
+      const username = document.getElementById('signup-username').value.trim();
+      const email = document.getElementById('signup-email').value.trim().toLowerCase();
+      const password = document.getElementById('signup-password').value;
 
-    if (!username || !email || !password) {
-      showToast("⚠️ All fields are required.", "error");
-      return;
-    }
+      if (!username || !email || !password) {
+        showToast("⚠️ All fields are required.", "error");
+        return;
+      }
 
-    signupBtn.disabled = true;
-    signupBtn.textContent = "Signing up...";
+      signupBtn.disabled = true;
+      signupBtn.textContent = "Signing up...";
 
-    try {
-      await auth.signupUser(username, email, password);
-      showToast("✅ Account created! Redirecting to login...", "success");
-      setTimeout(() => {
-        window.location.href = 'login.html'; // ✅ relative path
-      }, 1500); // Give user a second to see the toast
-    } catch (error) {
-      console.error(error);
-      showToast(randomFunnySignupError(), "error");
-    } finally {
-      signupBtn.disabled = false;
-      signupBtn.textContent = "Sign Up";
-    }
-  });
+      try {
+        const signupResult = await auth.signupUser(username, email, password);
+        console.log("✅ Signup success:", signupResult);
+
+        showToast("✅ Account created! Logging you in...", "success");
+
+        // Now login automatically
+        const loginResult = await auth.loginUser(email, password);
+        console.log("✅ Auto-login success:", loginResult);
+
+        setTimeout(() => {
+          window.location.href = '/dashboard.html'; 
+        }, 1000);
+
+      } catch (error) {
+        console.error(error);
+        showToast(randomFunnySignupError(), "error");
+      } finally {
+        signupBtn.disabled = false;
+        signupBtn.textContent = "Sign Up";
+      }
+    });
+  }
 });
+
 </script>
+
 
 
 </body>
