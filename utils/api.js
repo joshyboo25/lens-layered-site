@@ -1,8 +1,9 @@
 // frontend/utils/api.js
 
 const backendURL = window.location.hostname.includes('localhost')
-  ? 'http://localhost:5000'
-  : 'https://lens-backend-production-6f1d.up.railway.app'; // Already correct
+  ? 'http://localhost:3000'
+  : 'http://192.168.0.225:3000';
+
 
 async function safeFetch(path, options = {}) {
   try {
